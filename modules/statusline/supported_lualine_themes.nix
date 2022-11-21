@@ -1,4 +1,3 @@
 [
-  "tokyonight"
-  "onedark"
+  "github-theme"
 ]

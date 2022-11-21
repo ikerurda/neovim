@@ -8,7 +8,6 @@ with lib; {
     vim.visuals = {
       enable = mkDefault false;
 
-      nvimWebDevicons.enable = mkDefault false;
       lspkind.enable = mkDefault false;
 
       cursorWordline = {

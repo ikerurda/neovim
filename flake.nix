@@ -18,10 +18,6 @@
       url = "github:nvim-treesitter/nvim-treesitter";
       flake = false;
     };
-    lspkind = {
-      url = "github:onsails/lspkind-nvim";
-      flake = false;
-    };
     nvim-treesitter-context = {
       url = "github:lewis6991/nvim-treesitter-context";
       flake = false;
@@ -30,7 +26,6 @@
       url = "github:kosayoda/nvim-lightbulb";
       flake = false;
     };
-
     nvim-code-action-menu = {
       url = "github:weilbith/nvim-code-action-menu";
       flake = false;
@@ -43,21 +38,11 @@
       url = "github:jose-elias-alvarez/null-ls.nvim";
       flake = false;
     };
-
-    # Telescope
-    telescope = {
-      url = "github:nvim-telescope/telescope.nvim";
+    sqls-nvim = {
+      url = "github:nanotee/sqls.nvim";
       flake = false;
     };
-
-    # Langauge server
     rnix-lsp.url = "github:nix-community/rnix-lsp";
-
-    # Statuslines
-    lualine = {
-      url = "github:hoob3rt/lualine.nvim";
-      flake = false;
-    };
 
     # Autocomplete
     nvim-cmp = {
@@ -84,14 +69,14 @@
       url = "github:ray-x/cmp-treesitter";
       flake = false;
     };
-
-    # Snippets
+    lspkind = {
+      url = "github:onsails/lspkind-nvim";
+      flake = false;
+    };
     vim-vsnip = {
       url = "github:hrsh7th/vim-vsnip";
       flake = false;
     };
-
-    # Autopair
     nvim-autopairs = {
       url = "github:windwp/nvim-autopairs";
       flake = false;
@@ -107,9 +92,21 @@
       flake = false;
     };
 
+    # Telescope
+    telescope = {
+      url = "github:nvim-telescope/telescope.nvim";
+      flake = false;
+    };
+
+    # Statusline
+    lualine = {
+      url = "github:hoob3rt/lualine.nvim";
+      flake = false;
+    };
+
     # Themes
-    tokyonight = {
-      url = "github:folke/tokyonight.nvim";
+    github-theme = {
+      url = "github:projekt0n/github-nvim-theme";
       flake = false;
     };
 
@@ -126,18 +123,13 @@
       url = "github:lewis6991/gitsigns.nvim";
       flake = false;
     };
-
-    # Markdown
     glow-nvim = {
       url = "github:ellisonleao/glow.nvim";
       flake = false;
     };
   };
 
-  outputs = {
-    nixpkgs,
-    ...
-  } @ inputs: let
+  outputs = {nixpkgs, ...} @ inputs: let
     system = "x86_64-linux";
 
     # Plugin must be same as input name
@@ -151,6 +143,7 @@
       "nvim-code-action-menu"
       "lsp-signature"
       "null-ls"
+      "sqls-nvim"
       "telescope"
       "lualine"
       "nvim-cmp"
@@ -163,7 +156,7 @@
       "nvim-autopairs"
       "kommentary"
       "todo-comments"
-      "tokyonight"
+      "github-theme"
       "nvim-cursorline"
       "indent-blankline"
       "gitsigns-nvim"
@@ -222,24 +215,20 @@
         };
         vim.statusline.lualine = {
           enable = true;
-          theme = "onedark";
+          theme = "github-theme";
         };
         vim.theme = {
           enable = true;
-          name = "onedark";
-          style = "darker";
+          name = "github-theme";
+          style = "dark_default";
         };
-        vim.autopairs.enable = true;
-        vim.autocomplete = {
+        vim.completion = {
           enable = true;
-          type = "nvim-cmp";
+          autopairs = true;
         };
         vim.treesitter = {
           enable = true;
           context.enable = true;
-        };
-        vim.keys = {
-          enable = true;
         };
         vim.telescope = {
           enable = true;
@@ -255,6 +244,7 @@
       };
     };
   in rec {
+    # $ nix run
     apps.${system} = rec {
       nvim = {
         type = "app";
@@ -263,6 +253,7 @@
       default = nvim;
     };
 
+    # $ nix develop
     devShells.${system} = {
       default = pkgs.mkShell {
         buildInputs = [(neovimBuilder (configBuilder false))];

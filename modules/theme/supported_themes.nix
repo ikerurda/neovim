@@ -1,21 +1,13 @@
 {
-  onedark = {
-    setup = { style ? "dark" }: ''
-      -- OneDark theme
-      require('onedark').setup {
-        style = "${style}"
+  github-theme = {
+    setup = {style ? "dark_default"}: ''
+      require("github-theme").setup {
+        theme_style = "${style}",
+        hide_inactive_statusline = false,
+        dev = true,
+        overrides = override,
       }
-      require('onedark').load()
     '';
-    styles = [ "dark" "darker" "cool" "deep" "warm" "warmer" ];
-  };
-
-  tokyonight = {
-    setup = { style ? "night" }: ''
-      -- need to set style before colorscheme to apply
-      vim.g.tokyonight_style = '${style}'
-      vim.cmd[[colorscheme tokyonight]]
-    '';
-    styles = [ "day" "night" "storm" ];
+    styles = ["dark_default"];
   };
 }

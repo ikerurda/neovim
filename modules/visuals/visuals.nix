@@ -14,11 +14,6 @@ in {
       description = "visual enhancements";
     };
 
-    nvimWebDevicons.enable = mkOption {
-      type = types.bool;
-      description = "enable dev icons. required for certain plugins [nvim-web-devicons]";
-    };
-
     lspkind.enable = mkOption {
       type = types.bool;
       description = "enable vscode-like pictograms for lsp [lspkind]";
@@ -68,11 +63,6 @@ in {
     mkIf cfg.enable
     {
       vim.startPlugins = with pkgs.neovimPlugins; [
-        (
-          if cfg.nvimWebDevicons.enable
-          then nvim-web-devicons
-          else null
-        )
         (
           if cfg.lspkind.enable
           then pkgs.neovimPlugins.lspkind

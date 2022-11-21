@@ -12,20 +12,6 @@ in {
     enable = mkEnableOption "neovim lsp support";
     formatOnSave = mkEnableOption "Format on save";
     nix = mkEnableOption "Nix LSP";
-    rust = {
-      enable = mkEnableOption "Rust LSP";
-      rustAnalyzerOpts = mkOption {
-        type = types.str;
-        default = ''
-          ["rust-analyzer"] = {
-            experimental = {
-              procAttrMacros = true,
-            },
-          },
-        '';
-        description = "options to pass to rust analyzer";
-      };
-    };
     python = mkEnableOption "Python LSP";
     clang = {
       enable = mkEnableOption "C language LSP";
@@ -36,9 +22,7 @@ in {
       };
     };
     sql = mkEnableOption "SQL Language LSP";
-    go = mkEnableOption "Go language LSP";
     ts = mkEnableOption "TS language LSP";
-    hare = mkEnableOption "Hare plugin (not LSP)";
   };
 
   config = mkIf cfg.enable (
@@ -53,7 +37,7 @@ in {
           nvim-lspconfig
           null-ls
           (
-            if (config.vim.autocomplete.enable && (config.vim.autocomplete.type == "nvim-cmp"))
+            if (config.vim.completion.enable)
             then cmp-nvim-lsp
             else null
           )
@@ -62,42 +46,9 @@ in {
             then sqls-nvim
             else null
           )
-        ]
-        ++ (
-          if cfg.rust.enable
-          then [
-            crates-nvim
-            rust-tools
-            (
-              if cfg.hare
-              then hare-vim
-              else null
-            )
-          ]
-          else []
-        );
+        ];
 
       vim.configRC = ''
-        ${
-          if cfg.rust.enable
-          then ''
-            function! MapRustTools()
-              nnoremap <silent><leader>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
-              nnoremap <silent><leader>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
-              nnoremap <silent><leader>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
-              nnoremap <silent><leader>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
-              nnoremap <silent><leader>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
-            endfunction
-
-            autocmd filetype rust nnoremap <silent><leader>ri <cmd>lua require('rust-tools.inlay_hints').toggle_inlay_hints()<CR>
-            autocmd filetype rust nnoremap <silent><leader>rr <cmd>lua require('rust-tools.runnables').runnables()<CR>
-            autocmd filetype rust nnoremap <silent><leader>re <cmd>lua require('rust-tools.expand_macro').expand_macro()<CR>
-            autocmd filetype rust nnoremap <silent><leader>rc <cmd>lua require('rust-tools.open_cargo_toml').open_cargo_toml()<CR>
-            autocmd filetype rust nnoremap <silent><leader>rg <cmd>lua require('rust-tools.crate_graph').view_crate_graph('x11', nil)<CR>
-          ''
-          else ""
-        }
-
         ${
           if cfg.nix
           then ''
@@ -226,48 +177,9 @@ in {
         local lspconfig = require('lspconfig')
 
         local capabilities = vim.lsp.protocol.make_client_capabilities()
-        ${
-          let
-            cfg = config.vim.autocomplete;
-          in
-            writeIf cfg.enable (
-              if cfg.type == "nvim-cmp"
-              then ''
-                capabilities = require('cmp_nvim_lsp').default_capabilities()
-              ''
-              else ""
-            )
-        }
-
-        ${writeIf cfg.rust.enable ''
-          -- Rust config
-
-          local rustopts = {
-            tools = {
-              autoSetHints = true,
-              hover_with_actions = false,
-              inlay_hints = {
-                only_current_line = false,
-              }
-            },
-            server = {
-              capabilities = capabilities,
-              on_attach = default_on_attach,
-              cmd = {"${pkgs.rust-analyzer}/bin/rust-analyzer"},
-              settings = {
-                ${cfg.rust.rustAnalyzerOpts}
-              }
-            }
-          }
-
-          require('crates').setup {
-            null_ls = {
-              enabled = true,
-              name = "crates.nvim",
-            }
-          }
-          require('rust-tools').setup(rustopts)
-        ''}
+        ${writeIf config.vim.completion.enable ''
+          capabilities = require('cmp_nvim_lsp').default_capabilities()
+	'' }
 
         ${writeIf cfg.python ''
           -- Python config
@@ -312,15 +224,6 @@ in {
               require'sqls'.setup{}
             end,
             cmd = {"${pkgs.sqls}/bin/sqls", "-config", string.format("%s/config.yml", vim.fn.getcwd()) }
-          }
-        ''}
-
-        ${writeIf cfg.go ''
-          -- Go config
-          lspconfig.gopls.setup {
-            capabilities = capabilities;
-            on_attach = default_on_attach;
-            cmd = {"${pkgs.gopls}/bin/gopls", "serve"},
           }
         ''}
 
