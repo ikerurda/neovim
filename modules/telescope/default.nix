@@ -15,16 +15,20 @@ with builtins; let
     if cond
     then pkg
     else null;
+  mapIf = cond: map:
+    if cond
+    then map
+    else {};
 in {
   options.vim.telescope = {
-    enable = mkEnableOption "enable telescope";
-    file-browser = mkEnableOption "enable telescope-file-browser";
-    project = mkEnableOption "enable telescope-project";
-    ui-select = mkEnableOption "enable telescope-ui-select";
-    symbols = mkEnableOption "enable telescope-symbols";
+    enable = mkEnableOption "[telescope]";
+    file-browser = mkEnableOption "[telescope-file-browser]";
+    project = mkEnableOption "[telescope-project]";
+    ui-select = mkEnableOption "[telescope-ui-select]";
+    symbols = mkEnableOption "[telescope-symbols]";
   };
 
-  config = mkIf (cfg.enable) {
+  config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; [
       telescope
       (addIf cfg.file-browser telescope-file-browser)
@@ -56,8 +60,8 @@ in {
 
       local actions = require "telescope.actions"
       local layout_actions = require "telescope.actions.layout"
-      local tl = require "telescope"
-      tl.setup {
+      local telescope = require "telescope"
+      telescope.setup {
         defaults = {
           prompt_prefix = " ",
           selection_caret = "  ",
@@ -82,7 +86,9 @@ in {
           oldfiles = { mappings = { i = { ["<a-e>"] = open_in_fb } } },
           find_files = { mappings = { i = { ["<a-e>"] = open_in_fb } } },
         ''}
+        ${writeIf config.vim.lsp.enable ''
           diagnostics = { theme = "cursor", previewer = false },
+        ''}
           buffers = {
             ignore_current_buffer = true,
             sort_mru = true,
@@ -112,41 +118,26 @@ in {
         ''}
         },
       }
-      ${writeIf cfg.file-browser ''tl.load_extension "file_browser"''}
-      ${writeIf cfg.project ''tl.load_extension "project"''}
-      ${writeIf cfg.ui-select ''tl.load_extension "ui-select"''}
+    ${writeIf cfg.file-browser ''telescope.load_extension "file_browser"''}
+    ${writeIf cfg.project ''telescope.load_extension "project"''}
+    ${writeIf cfg.ui-select ''telescope.load_extension "ui-select"''}
     '';
 
-    vim.nnoremap = {
-      "<leader>fr" = "<cmd>Telescope oldfiles<cr>";
-      "<leader>ft" = "<cmd>Telescope resume<cr>";
-      "<leader>fb" = "<cmd>Telescope buffers<cr>";
-      "<leader>ff" = "<cmd>Telescope find_files<cr>";
-      "<leader>fg" = "<cmd>Telescope live_grep<cr>";
-      "<leader>fs" = "<cmd>Telescope grep_string<cr>";
-      "<leader>fa" = "<cmd>Telescope current_buffer_fuzzy_find<cr>";
-      "<leader>fh" = "<cmd>Telescope help_tags<cr>";
-      "<leader>fm" = "<cmd>Telescope man_pages<cr>";
-    }
-    // (
-      if cfg.file-browser
-      then {"<leader>fe" = "<cmd>Telescope file_browser<CR>";}
-      else {}
-    )
-    // (
-      if cfg.project
-      then {"<leader>fj" = "<cmd>Telescope project<CR>";}
-      else {}
-    )
-    // (
-      if cfg.symbols
-      then {"<leader>fv" = "<cmd>Telescope symbols<CR>";}
-      else {}
-    )
-    // (
-      if config.vim.lsp.enable
-      then {"<leader>fd" = "<cmd>Telescope diagnostics<CR>";}
-      else {}
-    );
+    vim.nnoremap =
+      {
+        "<leader>fr" = "<cmd>Telescope oldfiles<cr>";
+        "<leader>ft" = "<cmd>Telescope resume<cr>";
+        "<leader>fb" = "<cmd>Telescope buffers<cr>";
+        "<leader>ff" = "<cmd>Telescope find_files<cr>";
+        "<leader>fg" = "<cmd>Telescope live_grep<cr>";
+        "<leader>fs" = "<cmd>Telescope grep_string<cr>";
+        "<leader>fa" = "<cmd>Telescope current_buffer_fuzzy_find<cr>";
+        "<leader>fh" = "<cmd>Telescope help_tags<cr>";
+        "<leader>fm" = "<cmd>Telescope man_pages<cr>";
+      }
+      // (mapIf cfg.file-browser {"<leader>fe" = "<cmd>Telescope file_browser<CR>";})
+      // (mapIf cfg.project {"<leader>fj" = "<cmd>Telescope project<CR>";})
+      // (mapIf cfg.symbols {"<leader>fv" = "<cmd>Telescope symbols<CR>";})
+      // (mapIf config.vim.lsp.enable {"<leader>fd" = "<cmd>Telescope diagnostics<CR>";});
   };
 }

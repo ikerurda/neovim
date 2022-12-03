@@ -116,7 +116,7 @@
 
     # Statusline
     lualine = {
-      url = "github:hoob3rt/lualine.nvim";
+      url = "github:nvim-lualine/lualine.nvim";
       flake = false;
     };
 
@@ -214,7 +214,7 @@
         vim.vimAlias = true;
         vim.lsp = {
           enable = true;
-          formatOnSave = true;
+          formatOnSave = false;
           lightbulb.enable = true;
           nvimCodeActionMenu.enable = true;
           lspSignature.enable = true;
@@ -238,13 +238,10 @@
             lineTimeout = 0;
           };
         };
-        vim.statusline.lualine = {
-          enable = true;
-          theme = "base16";
-        };
+        vim.statusline.enable = true;
         vim.theme = {
           enable = true;
-          name = "custom-base16";
+          name = "custom";
         };
         vim.completion = {
           enable = true;
