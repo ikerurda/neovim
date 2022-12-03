@@ -25,6 +25,7 @@ in {
         [
           "auto"
           "16color"
+          "base16"
           "gruvbox"
           "ayu_dark"
           "ayu_light"

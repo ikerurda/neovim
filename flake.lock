@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "base16": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1667406506,
+        "narHash": "sha256-lu2DAEGZZD5EsqWAGU/bHdYlX9PcpEIKjvjwpI8ILcE=",
+        "owner": "RRethy",
+        "repo": "nvim-base16",
+        "rev": "bd172d833538c48bd3d589fbc8bc2f3a395ecc7b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RRethy",
+        "repo": "nvim-base16",
+        "type": "github"
+      }
+    },
     "cmp-buffer": {
       "flake": false,
       "locked": {
@@ -444,6 +460,7 @@
     },
     "root": {
       "inputs": {
+        "base16": "base16",
         "cmp-buffer": "cmp-buffer",
         "cmp-nvim-lsp": "cmp-nvim-lsp",
         "cmp-path": "cmp-path",
@@ -471,6 +488,10 @@
         "rnix-lsp": "rnix-lsp",
         "sqls-nvim": "sqls-nvim",
         "telescope": "telescope",
+        "telescope-file-browser": "telescope-file-browser",
+        "telescope-project": "telescope-project",
+        "telescope-symbols": "telescope-symbols",
+        "telescope-ui-select": "telescope-ui-select",
         "todo-comments": "todo-comments",
         "vim-vsnip": "vim-vsnip"
       }
@@ -504,6 +525,70 @@
       "original": {
         "owner": "nvim-telescope",
         "repo": "telescope.nvim",
+        "type": "github"
+      }
+    },
+    "telescope-file-browser": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1669821129,
+        "narHash": "sha256-K3WqbGhiYzxbEMkumQFa0d3ZZsXGmMwk8d0DMDMnAwc=",
+        "owner": "nvim-telescope",
+        "repo": "telescope-file-browser.nvim",
+        "rev": "8646e46b8545b9234e87083d124c0a4e4ed47735",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-telescope",
+        "repo": "telescope-file-browser.nvim",
+        "type": "github"
+      }
+    },
+    "telescope-project": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1648422945,
+        "narHash": "sha256-TfrdLHqQ3yE8vg4ylRAIhArja1+L1sJcMnt9k8rL9Xg=",
+        "owner": "ikerurda",
+        "repo": "telescope-project.nvim",
+        "rev": "2b9141c0ca7fd16cc487b0a01863084c89e48a22",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ikerurda",
+        "repo": "telescope-project.nvim",
+        "type": "github"
+      }
+    },
+    "telescope-symbols": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1650204571,
+        "narHash": "sha256-Z7Bn3iF9Wom8cSdKNVDgQTirQ+W6OWuG30BVq0VLgPs=",
+        "owner": "nvim-telescope",
+        "repo": "telescope-symbols.nvim",
+        "rev": "f7d7c84873c95c7bd5682783dd66f84170231704",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-telescope",
+        "repo": "telescope-symbols.nvim",
+        "type": "github"
+      }
+    },
+    "telescope-ui-select": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1651305900,
+        "narHash": "sha256-/JM2KX70JXa3sydrUj13Vd4rRwhn3VrdW7qLLHqIqyY=",
+        "owner": "nvim-telescope",
+        "repo": "telescope-ui-select.nvim",
+        "rev": "62ea5e58c7bbe191297b983a9e7e89420f581369",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-telescope",
+        "repo": "telescope-ui-select.nvim",
         "type": "github"
       }
     },

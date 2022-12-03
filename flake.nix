@@ -97,6 +97,22 @@
       url = "github:nvim-telescope/telescope.nvim";
       flake = false;
     };
+    telescope-file-browser = {
+      url = "github:nvim-telescope/telescope-file-browser.nvim";
+      flake = false;
+    };
+    telescope-project = {
+      url = "github:ikerurda/telescope-project.nvim";
+      flake = false;
+    };
+    telescope-ui-select = {
+      url = "github:nvim-telescope/telescope-ui-select.nvim";
+      flake = false;
+    };
+    telescope-symbols = {
+      url = "github:nvim-telescope/telescope-symbols.nvim";
+      flake = false;
+    };
 
     # Statusline
     lualine = {
@@ -107,6 +123,10 @@
     # Themes
     github-theme = {
       url = "github:projekt0n/github-nvim-theme";
+      flake = false;
+    };
+    base16 = {
+      url = "github:RRethy/nvim-base16";
       flake = false;
     };
 
@@ -145,6 +165,10 @@
       "null-ls"
       "sqls-nvim"
       "telescope"
+      "telescope-file-browser"
+      "telescope-project"
+      "telescope-ui-select"
+      "telescope-symbols"
       "lualine"
       "nvim-cmp"
       "cmp-buffer"
@@ -157,6 +181,7 @@
       "kommentary"
       "todo-comments"
       "github-theme"
+      "base16"
       "nvim-cursorline"
       "indent-blankline"
       "gitsigns-nvim"
@@ -215,12 +240,11 @@
         };
         vim.statusline.lualine = {
           enable = true;
-          theme = "github-theme";
+          theme = "base16";
         };
         vim.theme = {
           enable = true;
-          name = "github-theme";
-          style = "dark_default";
+          name = "custom-base16";
         };
         vim.completion = {
           enable = true;
@@ -232,6 +256,10 @@
         };
         vim.telescope = {
           enable = true;
+          file-browser = true;
+          project = true;
+          ui-select = true;
+          symbols = true;
         };
         vim.markdown = {
           enable = true;

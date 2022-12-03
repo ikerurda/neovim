@@ -16,13 +16,12 @@ in {
     name = mkOption {
       description = "Supported themes can be found in `supported_themes.nix`";
       type = types.enum (attrNames supported_themes);
-      default = "github-theme";
+      default = "github";
     };
 
     style = mkOption {
       description = "Specific style for theme if it supports it";
-      type = with types; enum supported_themes.${cfg.name}.styles;
-      default = "dark_default";
+      type = with types; enum supported_themes.${cfg.name}.styles or null;
     };
 
     extraConfig = mkOption {
@@ -49,7 +48,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    vim.startPlugins = [pkgs.neovimPlugins.${cfg.name}];
+    vim.startPlugins = [pkgs.neovimPlugins.${cfg.name}.pkg];
     vim.luaConfigRC =
       cfg.extraConfig
       + supported_themes.${cfg.name}.setup {style = cfg.style;};
