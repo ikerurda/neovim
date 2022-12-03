@@ -69,7 +69,7 @@ in {
     vim.luaConfigRC = ''
       require"lualine".setup {
         options = {
-          theme = "base16",
+          theme = "${cfg.theme}",
           component_separators = "${cfg.componentSeparator}",
           section_separators = "${cfg.sectionSeparator}",
           globalstatus = ${toBool cfg.global},

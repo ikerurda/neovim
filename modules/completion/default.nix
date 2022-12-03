@@ -120,7 +120,6 @@ in {
         require("nvim-autopairs").setup {
           ${writeIf (config.vim.treesitter.enable) "check_ts = true,"}
           enable_moveright = false,
-	  enable_check_bracket_line = false,
           fast_wrap = {},
         } 
       ''}
