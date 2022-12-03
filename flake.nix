@@ -238,7 +238,10 @@
             lineTimeout = 0;
           };
         };
-        vim.statusline.enable = true;
+        vim.statusline = {
+          enable = true;
+          theme = "base16";
+        };
         vim.theme = {
           enable = true;
           name = "custom";

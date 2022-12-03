@@ -14,6 +14,12 @@ with builtins; let
 in {
   options.vim.statusline = {
     enable = mkEnableOption "lualine";
+    global = mkEnableOption "global statusline";
+
+    theme = mkOption {
+      type = types.str;
+      description = "Lualine theme";
+    };
 
     sectionSeparator = mkOption {
       type = types.str;
@@ -56,16 +62,14 @@ in {
         description = "Section config for: | A | B | C       X | Y | (Z) |";
       };
     };
-
-    global = mkEnableOption "global statusline";
   };
 
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; [lualine];
     vim.luaConfigRC = ''
-      require'lualine'.setup {
+      require"lualine".setup {
         options = {
-          theme = "auto",
+          theme = "base16",
           component_separators = "${cfg.componentSeparator}",
           section_separators = "${cfg.sectionSeparator}",
           globalstatus = ${toBool cfg.global},

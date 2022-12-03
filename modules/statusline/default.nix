@@ -8,6 +8,8 @@ with lib; {
   imports = [./lualine.nix];
   config.vim.statusline = {
     enable = mkDefault false;
+    theme = mkDefault "auto";
+    global = mkDefault true;
     sectionSeparator = mkDefault "";
     componentSeparator = mkDefault "";
     section = {
