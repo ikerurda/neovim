@@ -167,10 +167,10 @@ in {
       }
       else {};
 
-    vim.nnoremap =
-      if (cfg.mapLeaderSpace)
-      then {"<space>" = "<nop>";}
-      else {};
+    vim.nnoremap = {
+      "<tab>" = "<cmd>bn<cr>";
+      "<bs>" = "<cmd>bp<cr>";
+    } // (if (cfg.mapLeaderSpace) then {"<space>" = "<nop>";} else {});
 
     vim.configRC = ''
       " Settings that are set for everything
