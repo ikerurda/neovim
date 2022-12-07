@@ -13,6 +13,14 @@ with builtins; let
     else "";
 in {
   options.vim = {
+    confirm = mkEnableOption "Prompt user whether ";
+
+
+
+
+
+
+
     colourTerm = mkOption {
       description = "Set terminal up for 256 colours";
       type = types.bool;

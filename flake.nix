@@ -42,7 +42,6 @@
       url = "github:nanotee/sqls.nvim";
       flake = false;
     };
-    rnix-lsp.url = "github:nix-community/rnix-lsp";
 
     # Autocomplete
     nvim-cmp = {
@@ -193,12 +192,7 @@
     pkgs = import nixpkgs {
       inherit system;
       config = {allowUnfree = true;};
-      overlays = [
-        pluginOverlay
-        (final: prev: {
-          rnix-lsp = inputs.rnix-lsp.defaultPackage.${system};
-        })
-      ];
+      overlays = [ pluginOverlay ];
     };
 
     lib =
