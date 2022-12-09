@@ -13,7 +13,6 @@
     ./visuals
     ./lsp
     ./treesitter
-    ./snippets
     ./markdown
     ./telescope
     ./git

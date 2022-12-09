@@ -30,6 +30,7 @@ in {
       (addIf cfg.refactor nvim-treesitter-refactor)
       (addIf cfg.textobjects nvim-treesitter-textobjects)
       (addIf cfg.context nvim-treesitter-context)
+      (pkgs.vimPlugins.nvim-treesitter.withAllGrammars)
     ];
 
     vim.luaConfigRC = ''
@@ -39,14 +40,15 @@ in {
       vim.g.foldable = false
     ''}
       require"nvim-treesitter.configs".setup {
-        ensure_installed = "all",
         indent = { enable = true },
         highlight = { enable = true },
+      ${writeIf cfg.refactor ''
         refactor = {
           smart_rename = { enable = true, keymaps = { smart_rename = "gr" } },
           highlight_definitions = { enable = true },
           highlight_current_scope = { enable = false },
         },
+      ''}
         incremental_selection = {
           enable = true,
           keymaps = {
@@ -56,6 +58,7 @@ in {
             node_decremental = "<c-k>",
           },
         },
+      ${writeIf cfg.textobjects ''
         textobjects = {
           select = {
             enable = true,
@@ -87,6 +90,7 @@ in {
             },
           },
         },
+      ''}
       }
     ${writeIf cfg.context ''
       require"treesitter-context".setup {

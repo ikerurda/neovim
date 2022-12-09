@@ -60,28 +60,44 @@
       url = "github:hrsh7th/cmp-buffer";
       flake = false;
     };
-    cmp-nvim-lsp = {
-      url = "github:hrsh7th/cmp-nvim-lsp";
-      flake = false;
-    };
-    cmp-vsnip = {
-      url = "github:hrsh7th/cmp-vsnip";
-      flake = false;
-    };
     cmp-path = {
       url = "github:hrsh7th/cmp-path";
       flake = false;
     };
-    cmp-treesitter = {
-      url = "github:ray-x/cmp-treesitter";
+    cmp-nvim-lsp = {
+      url = "github:hrsh7th/cmp-nvim-lsp";
+      flake = false;
+    };
+    cmp-nvim-lsp-signature = {
+      url = "github:hrsh7th/cmp-nvim-lsp-signature-help";
+      flake = false;
+    };
+    cmp-calc = {
+      url = "github:hrsh7th/cmp-calc";
+      flake = false;
+    };
+    cmp-spell = {
+      url = "github:f3fora/cmp-spell";
+      flake = false;
+    };
+    cmp-digraphs = {
+      url = "github:dmitmel/cmp-digraphs";
+      flake = false;
+    };
+    cmp-luasnip = {
+      url = "github:saadparwaiz1/cmp_luasnip";
+      flake = false;
+    };
+    luasnip = {
+      url = "github:L3MON4D3/LuaSnip";
+      flake = false;
+    };
+    friendly-snippets = {
+      url = "github:rafamadriz/friendly-snippets";
       flake = false;
     };
     lspkind = {
       url = "github:onsails/lspkind-nvim";
-      flake = false;
-    };
-    vim-vsnip = {
-      url = "github:hrsh7th/vim-vsnip";
       flake = false;
     };
     nvim-autopairs = {
@@ -181,11 +197,15 @@
       "nvim-cmp"
       "cmp-buffer"
       "cmp-nvim-lsp"
-      "cmp-vsnip"
+      "cmp-nvim-lsp-signature"
       "cmp-path"
-      "cmp-treesitter"
+      "cmp-calc"
+      "cmp-spell"
+      "cmp-digraphs"
+      "cmp-luasnip"
+      "luasnip"
+      "friendly-snippets"
       "lspkind"
-      "vim-vsnip"
       "nvim-autopairs"
       "kommentary"
       "todo-comments"
@@ -256,7 +276,6 @@
         };
         vim.treesitter = {
           enable = true;
-          context.enable = true;
         };
         vim.telescope = {
           enable = true;
