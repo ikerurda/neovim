@@ -18,8 +18,16 @@
       url = "github:nvim-treesitter/nvim-treesitter";
       flake = false;
     };
+    nvim-treesitter-refactor = {
+      url = "github:nvim-treesitter/nvim-treesitter-refactor";
+      flake = false;
+    };
+    nvim-treesitter-textobjects = {
+      url = "github:nvim-treesitter/nvim-treesitter-textobjects";
+      flake = false;
+    };
     nvim-treesitter-context = {
-      url = "github:lewis6991/nvim-treesitter-context";
+      url = "github:nvim-treesitter/nvim-treesitter-context";
       flake = false;
     };
     nvim-lightbulb = {
@@ -156,7 +164,8 @@
       "plenary-nvim"
       "nvim-lspconfig"
       "nvim-treesitter"
-      "lspkind"
+      "nvim-treesitter-refactor"
+      "nvim-treesitter-textobjects"
       "nvim-treesitter-context"
       "nvim-lightbulb"
       "nvim-code-action-menu"
@@ -175,6 +184,7 @@
       "cmp-vsnip"
       "cmp-path"
       "cmp-treesitter"
+      "lspkind"
       "vim-vsnip"
       "nvim-autopairs"
       "kommentary"

@@ -7,84 +7,94 @@
 with lib;
 with builtins; let
   cfg = config.vim.treesitter;
+  writeIf = cond: msg:
+    if cond
+    then msg
+    else "";
+  addIf = cond: pkg:
+    if cond
+    then pkg
+    else null;
 in {
   options.vim.treesitter = {
-    enable = mkOption {
-      type = types.bool;
-      description = "enable tree-sitter [nvim-treesitter]";
-    };
-
-    fold = mkOption {
-      type = types.bool;
-      description = "enable fold with tree-sitter";
-    };
-
-    autotagHtml = mkOption {
-      type = types.bool;
-      description = "enable autoclose and rename html tag [nvim-ts-autotag]";
-    };
+    enable = mkEnableOption "nvim-treesitter";
+    fold = mkEnableOption "fold with tree-sitter";
+    refactor = mkEnableOption "refactor with tree-sitter";
+    textobjects = mkEnableOption "tree-sitter's textobjects";
+    context = mkEnableOption "tree-sitter's context";
   };
 
-  config = mkIf cfg.enable (
-    let
-      writeIf = cond: msg:
-        if cond
-        then msg
-        else "";
-    in {
-      vim.startPlugins = with pkgs.neovimPlugins; [
-        nvim-treesitter
-        (
-          if cfg.autotagHtml
-          then nvim-ts-autotag
-          else null
-        )
-      ];
+  config = mkIf cfg.enable {
+    vim.startPlugins = with pkgs.neovimPlugins; [
+      nvim-treesitter
+      (addIf cfg.refactor nvim-treesitter-refactor)
+      (addIf cfg.textobjects nvim-treesitter-textobjects)
+      (addIf cfg.context nvim-treesitter-context)
+    ];
 
-      vim.configRC = writeIf cfg.fold ''
-        " Tree-sitter based folding
-        set foldmethod=expr
-        set foldexpr=nvim_treesitter#foldexpr()
-        set nofoldenable
-      '';
-
-      vim.luaConfigRC = ''
-        -- Treesitter config
-        require'nvim-treesitter.configs'.setup {
-          highlight = {
-            enable = true,
-            disable = {},
+    vim.luaConfigRC = ''
+    ${writeIf cfg.fold ''
+      vim.g.foldmethod = "expr"
+      vim.g.foldexpr = "nvim_treesitter#foldexpr()"
+      vim.g.foldable = false
+    ''}
+      require"nvim-treesitter.configs".setup {
+        ensure_installed = "all",
+        indent = { enable = true },
+        highlight = { enable = true },
+        refactor = {
+          smart_rename = { enable = true, keymaps = { smart_rename = "gr" } },
+          highlight_definitions = { enable = true },
+          highlight_current_scope = { enable = false },
+        },
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = "<cr>",
+            scope_incremental = "<nop>",
+            node_incremental = "<c-j>",
+            node_decremental = "<c-k>",
           },
-
-          auto_install = false,
-          ensure_isntalled = {},
-
-          incremental_selection = {
+        },
+        textobjects = {
+          select = {
             enable = true,
+            lookahead = true,
             keymaps = {
-              init_selection = "gnn",
-              node_incremental = "grn",
-              scope_incremental = "grc",
-              node_decremental = "grm",
+              ["af"] = "@function.outer",
+              ["if"] = "@function.inner",
+              ["ac"] = "@conditional.outer",
+              ["ic"] = "@conditional.inner",
+              ["aa"] = "@parameter.outer",
+              ["ia"] = "@parameter.inner",
             },
           },
-
-          ${writeIf cfg.autotagHtml ''
-          autotag = {
+          swap = {
             enable = true,
+            swap_next = { ["<c-n>"] = "@parameter.inner" },
+            swap_previous = { ["<c-p>"] = "@parameter.inner" },
           },
-        ''}
-        }
-
-        local parser_config = require'nvim-treesitter.parsers'.get_parser_configs()
-        parser_config.hare = {
-          install_info = {
-            url = "",
-            files = { "" }
+          move = {
+            enable = true,
+            set_jumps = true,
+            goto_next_start = {
+              ["gf"] = "@function.outer",
+              ["ga"] = "@parameter.inner",
+            },
+            goto_previous_start = {
+              ["gF"] = "@function.outer",
+              ["gA"] = "@parameter.inner",
+            },
           },
-          filetype = "ha",
-        }
-      '';
-    }
-  );
+        },
+      }
+    ${writeIf cfg.context ''
+      require"treesitter-context".setup {
+        enable = true,
+        throttle = true,
+        max_lines = 0
+      }
+    ''}
+    '';
+  };
 }
