@@ -40,7 +40,7 @@ in {
 
     vim.luaConfigRC = ''
       local cmp = require "cmp"
-    ${writeIf config.vim.visuals.lspkind.enable ''
+    ${writeIf config.vim.visuals.lspkind ''
       local kind = require "lspkind"
     ''}
     ${writeIf cfg.snippets ''
@@ -74,7 +74,7 @@ in {
           { name = "spell" },
         },
         formatting = {
-          format = ${writeIf config.vim.visuals.lspkind.enable ''require"lspkind".cmp_format''} {
+          format = ${writeIf config.vim.visuals.lspkind ''require"lspkind".cmp_format''} {
             with_text = true,
             menu = {
             ${writeIf config.vim.lsp.enable ''

@@ -99,7 +99,7 @@ in {
             }),
           ''}
           -- Commented out for now
-          --${writeIf (config.vim.git.enable && config.vim.git.gitsigns.enable) ''
+          --${writeIf (config.vim.git.enable && config.vim.git.signs) ''
           --  null_ls.builtins.code_actions.gitsigns,
           --''}
           ${writeIf cfg.sql

@@ -11,9 +11,10 @@
     ./basic
     ./statusline
     ./visuals
+    ./moving
+    ./autocommands
     ./lsp
     ./treesitter
-    ./markdown
     ./telescope
     ./git
   ];

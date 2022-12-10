@@ -105,13 +105,24 @@
       flake = false;
     };
 
-    # Commenting
-    kommentary = {
-      url = "github:b3nj5m1n/kommentary";
+    dressing = {
+      url = "github:stevearc/dressing.nvim";
       flake = false;
     };
-    todo-comments = {
-      url = "github:folke/todo-comments.nvim";
+    colorizer = {
+      url = "github:norcalli/nvim-colorizer.lua";
+      flake = false;
+    };
+    comment = {
+      url = "github:numToStr/Comment.nvim";
+      flake = false;
+    };
+    leap = {
+      url = "github:ggandor/leap.nvim";
+      flake = false;
+    };
+    surround = {
+      url = "github:ur4ltz/surround.nvim";
       flake = false;
     };
 
@@ -166,8 +177,8 @@
       url = "github:lewis6991/gitsigns.nvim";
       flake = false;
     };
-    glow-nvim = {
-      url = "github:ellisonleao/glow.nvim";
+    neogit = {
+      url = "github:TimUntersberger/neogit";
       flake = false;
     };
   };
@@ -207,13 +218,17 @@
       "friendly-snippets"
       "lspkind"
       "nvim-autopairs"
-      "kommentary"
-      "todo-comments"
+      "comment"
+      "leap"
+      "surround"
+      "dressing"
+      "colorizer"
       "github-theme"
       "base16"
       "nvim-cursorline"
       "indent-blankline"
       "gitsigns-nvim"
+      "neogit"
       "glow-nvim"
     ];
 
@@ -250,16 +265,13 @@
         };
         vim.visuals = {
           enable = true;
-          lspkind.enable = true;
-          indentBlankline = {
+          lspkind = true;
+          guides = {
             enable = true;
+            listChar = "│";
             fillChar = "";
-            eolChar = "";
-            showCurrContext = true;
-          };
-          cursorWordline = {
-            enable = true;
-            lineTimeout = 0;
+            eolChar = "↴";
+            hiContext = true;
           };
         };
         vim.statusline = {
@@ -284,13 +296,10 @@
           ui-select = true;
           symbols = true;
         };
-        vim.markdown = {
-          enable = true;
-          glow.enable = true;
-        };
         vim.git = {
           enable = true;
-          gitsigns.enable = true;
+          signs = true;
+          neogit = true;
         };
       };
     };

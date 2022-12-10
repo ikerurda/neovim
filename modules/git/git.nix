@@ -7,63 +7,36 @@
 with lib;
 with builtins; let
   cfg = config.vim.git;
+  writeIf = cond: msg:
+    if cond
+    then msg
+    else "";
+  addIf = cond: pkg:
+    if cond
+    then pkg
+    else null;
 in {
   options.vim.git = {
-    enable = mkOption {
-      type = types.bool;
-      description = "Enable git plugins";
-    };
-
-    gitsigns.enable = mkOption {
-      type = types.bool;
-      description = "Enable git options";
-    };
+    enable = mkEnableOption "Enable git plugins";
+    signs = mkEnableOption "Enable git options";
+    neogit = mkEnableOption "Enable git options";
   };
 
-  config =
-    mkIf cfg.enable
-    (
-      let
-        mkVimBool = val:
-          if val
-          then "1"
-          else "0";
-      in {
-        vim.startPlugins = with pkgs.neovimPlugins;
-          if (cfg.gitsigns.enable)
-          then [gitsigns-nvim]
-          else [];
+  config = mkIf cfg.enable {
+    vim.startPlugins = with pkgs.neovimPlugins; [
+      (addIf (cfg.signs) gitsigns-nvim)
+      (addIf (cfg.neogit) neogit)
+    ];
 
-        vim.luaConfigRC = mkIf (cfg.gitsigns.enable) ''
-          -- GitSigns setup
-          require('gitsigns').setup {
-            keymaps = {
-              noremap = true,
-
-              ['n <leader>gn'] = { expr = true, "&diff ? \'\' : '<cmd>Gitsigns next_hunk<CR>'"},
-              ['n <leader>gp'] = { expr = true, "&diff ? \'\' : '<cmd>Gitsigns prev_hunk<CR>'"},
-
-              ['n <leader>gs'] = '<cmd>Gitsigns stage_hunk<CR>',
-              ['v <leader>gs'] = ':Gitsigns stage_hunk<CR>',
-              ['n <leader>gu'] = '<cmd>Gitsigns undo_stage_hunk<CR>',
-              ['n <leader>gr'] = '<cmd>Gitsigns reset_hunk<CR>',
-              ['v <leader>gr'] = ':Gitsigns reset_hunk<CR>',
-              ['n <leader>gR'] = '<cmd>Gitsigns reset_buffer<CR>',
-              ['n <leader>gp'] = '<cmd>Gitsigns preview_hunk<CR>',
-              ['n <leader>gb'] = '<cmd>lua require"gitsigns".blame_line{full=true}<CR>',
-              ['n <leader>gS'] = '<cmd>Gitsigns stage_buffer<CR>',
-              ['n <leader>gU'] = '<cmd>Gitsigns reset_buffer_index<CR>',
-              ['n <leader>gts'] = ':Gitsigns toggle_signs<CR>',
-              ['n <leader>gtn'] = ':Gitsigns toggle_numhl<CR>',
-              ['n <leader>gtl'] = ':Gitsigns toggle_linehl<CR>',
-              ['n <leader>gtw'] = ':Gitsigns toggle_word_diff<CR>',
-
-              -- Text objects
-              ['o ih'] = ':<C-U>Gitsigns select_hunk<CR>',
-              ['x ih'] = ':<C-U>Gitsigns select_hunk<CR>'
-            },
-          }
-        '';
-      }
-    );
+    vim.luaConfigRC = ''
+    ${writeIf (cfg.signs) ''
+      require("gitsigns").setup({ keymaps = {} })
+    ''}
+    ${writeIf (cfg.neogit) ''
+      vim.keymap.set("n", "<leader>g", function()
+        require("neogit").open({ cwd = vim.fn.expand("%:h", true, false) })
+      end)
+    ''}
+    '';
+  };
 }
