@@ -30,6 +30,9 @@ in {
       require("gitsigns").setup({ keymaps = {} })
     ''}
     ${optionalString cfg.neogit ''
+      require("neogit").setup({
+        disable_builtin_notifications = true;
+      });
       vim.keymap.set("n", "<leader>g", function()
         require("neogit").open({ cwd = vim.fn.expand("%:h", true, false) })
       end)
