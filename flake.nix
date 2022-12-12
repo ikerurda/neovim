@@ -216,7 +216,7 @@
 
     overlays.default = final: prev: {
       inherit neovimBuilder;
-      neovimKR = packages.${system}.neovimKR;
+      neovimKR = packages.${system}.default;
       neovimPlugins = pkgs.neovimPlugins;
     };
 
