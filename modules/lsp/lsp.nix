@@ -10,10 +10,6 @@ let cfg = config.vim.lsp;
 in {
   options.vim.lsp = {
     enable = mkEnableOption "neovim lsp support";
-    signature = mkOption {
-      description = "Whether to enable lsp signature";
-      type = types.bool;
-    };
     progress = mkOption {
       description = "Whether to enable progress indicators";
       type = types.bool;
@@ -47,17 +43,9 @@ in {
       lspconfig
       null-ls
     ]
-    ++ (optional cfg.signature lsp-signature)
     ++ (optional config.vim.completion.enable cmp-lsp);
 
     vim.configRC = ''
-    ${optionalString cfg.signature ''
-      require("lsp_signature").setup({
-        hint_prefix = "",
-        floating_window = false,
-      })
-    ''};
-
       local attach_keymaps = function(client, bufnr)
         vim.keymap.set("n", "gr", vim.lsp.buf.rename, { buffer = true })
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = true })

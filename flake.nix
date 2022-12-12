@@ -26,10 +26,6 @@
       url = "github:jose-elias-alvarez/null-ls.nvim";
       flake = false;
     };
-    lsp-signature = {
-      url = "github:ray-x/lsp_signature.nvim";
-      flake = false;
-    };
 
     # Autocomplete
     cmp = {
@@ -64,6 +60,8 @@
       url = "github:saadparwaiz1/cmp_luasnip";
       flake = false;
     };
+
+    # Snippets
     luasnip = {
       url = "github:L3MON4D3/LuaSnip";
       flake = false;
@@ -74,10 +72,6 @@
     };
     lspkind = {
       url = "github:onsails/lspkind-nvim";
-      flake = false;
-    };
-    autopairs = {
-      url = "github:windwp/nvim-autopairs";
       flake = false;
     };
 
@@ -126,16 +120,20 @@
       url = "github:TimUntersberger/neogit";
       flake = false;
     };
-    comment = {
-      url = "github:numToStr/Comment.nvim";
-      flake = false;
-    };
     leap = {
       url = "github:ggandor/leap.nvim";
       flake = false;
     };
+    comment = {
+      url = "github:numToStr/Comment.nvim";
+      flake = false;
+    };
     surround = {
       url = "github:kylechui/nvim-surround";
+      flake = false;
+    };
+    autopairs = {
+      url = "github:windwp/nvim-autopairs";
       flake = false;
     };
 
