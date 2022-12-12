@@ -24,7 +24,7 @@ in {
 
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; [
-      (addIf (cfg.signs) gitsigns-nvim)
+      (addIf (cfg.signs) gitsigns)
       (addIf (cfg.neogit) neogit)
     ];
 

@@ -26,10 +26,10 @@ in {
 
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; [
-      nvim-treesitter
-      (addIf cfg.refactor nvim-treesitter-refactor)
-      (addIf cfg.textobjects nvim-treesitter-textobjects)
-      (addIf cfg.context nvim-treesitter-context)
+      treesitter
+      (addIf cfg.refactor treesitter-refactor)
+      (addIf cfg.textobjects treesitter-textobjects)
+      (addIf cfg.context treesitter-context)
       (pkgs.vimPlugins.nvim-treesitter.withAllGrammars)
     ];
 

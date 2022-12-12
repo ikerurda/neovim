@@ -12,7 +12,6 @@
     ./statusline
     ./visuals
     ./moving
-    ./autocommands
     ./lsp
     ./treesitter
     ./telescope

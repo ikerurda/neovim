@@ -24,18 +24,18 @@ in {
 
   config = mkIf (cfg.enable) {
     vim.startPlugins = with pkgs.neovimPlugins; [
-      nvim-cmp
+      cmp
       cmp-buffer
       cmp-path
       cmp-calc
       cmp-spell
       cmp-digraphs
-      (addIf config.vim.lsp.enable cmp-nvim-lsp)
-      (addIf config.vim.lsp.enable cmp-nvim-lsp-signature)
+      (addIf config.vim.lsp.enable cmp-lsp)
+      (addIf config.vim.lsp.enable cmp-lsp-signature)
       (addIf cfg.snippets luasnip)
       (addIf cfg.snippets friendly-snippets)
       (addIf cfg.snippets cmp-luasnip)
-      (addIf cfg.autopairs nvim-autopairs)
+      (addIf cfg.autopairs autopairs)
     ];
 
     vim.luaConfigRC = ''

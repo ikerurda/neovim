@@ -34,16 +34,11 @@ in {
     in {
       vim.startPlugins = with pkgs.neovimPlugins;
         [
-          nvim-lspconfig
+          lspconfig
           null-ls
           (
             if (config.vim.completion.enable)
-            then cmp-nvim-lsp
-            else null
-          )
-          (
-            if cfg.sql
-            then sqls-nvim
+            then cmp-lsp
             else null
           )
         ];
@@ -212,18 +207,6 @@ in {
             then ""
             else "init_options = ${cfg.clang.cclsOpts}"
           }
-          }
-        ''}
-
-        ${writeIf cfg.sql ''
-          -- SQLS config
-          lspconfig.sqls.setup {
-            on_attach = function(client)
-              client.server_capabilities.execute_command = true
-              on_attach_keymaps(client, bufnr)
-              require'sqls'.setup{}
-            end,
-            cmd = {"${pkgs.sqls}/bin/sqls", "-config", string.format("%s/config.yml", vim.fn.getcwd()) }
           }
         ''}
 

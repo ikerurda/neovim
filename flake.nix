@@ -4,55 +4,39 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     # Dependencies
-    plenary-nvim = {
+    impatient = {
+      url = "github:lewis6991/impatient.nvim";
+      flake = false;
+    };
+    plenary = {
       url = "github:nvim-lua/plenary.nvim";
+      flake = false;
+    };
+    repeat = {
+      url = "github:tpope/vim-repeat";
       flake = false;
     };
 
     # LSP
-    nvim-lspconfig = {
+    lspconfig = {
       url = "github:neovim/nvim-lspconfig?ref=v0.1.3";
-      flake = false;
-    };
-    nvim-treesitter = {
-      url = "github:nvim-treesitter/nvim-treesitter";
-      flake = false;
-    };
-    nvim-treesitter-refactor = {
-      url = "github:nvim-treesitter/nvim-treesitter-refactor";
-      flake = false;
-    };
-    nvim-treesitter-textobjects = {
-      url = "github:nvim-treesitter/nvim-treesitter-textobjects";
-      flake = false;
-    };
-    nvim-treesitter-context = {
-      url = "github:nvim-treesitter/nvim-treesitter-context";
-      flake = false;
-    };
-    nvim-lightbulb = {
-      url = "github:kosayoda/nvim-lightbulb";
-      flake = false;
-    };
-    nvim-code-action-menu = {
-      url = "github:weilbith/nvim-code-action-menu";
-      flake = false;
-    };
-    lsp-signature = {
-      url = "github:ray-x/lsp_signature.nvim";
       flake = false;
     };
     null-ls = {
       url = "github:jose-elias-alvarez/null-ls.nvim";
       flake = false;
     };
-    sqls-nvim = {
-      url = "github:nanotee/sqls.nvim";
+    lsp-signature = {
+      url = "github:ray-x/lsp_signature.nvim";
+      flake = false;
+    };
+    code-action-menu = {
+      url = "github:weilbith/nvim-code-action-menu";
       flake = false;
     };
 
     # Autocomplete
-    nvim-cmp = {
+    cmp = {
       url = "github:hrsh7th/nvim-cmp";
       flake = false;
     };
@@ -64,11 +48,11 @@
       url = "github:hrsh7th/cmp-path";
       flake = false;
     };
-    cmp-nvim-lsp = {
+    cmp-lsp = {
       url = "github:hrsh7th/cmp-nvim-lsp";
       flake = false;
     };
-    cmp-nvim-lsp-signature = {
+    cmp-lsp-signature = {
       url = "github:hrsh7th/cmp-nvim-lsp-signature-help";
       flake = false;
     };
@@ -100,29 +84,26 @@
       url = "github:onsails/lspkind-nvim";
       flake = false;
     };
-    nvim-autopairs = {
+    autopairs = {
       url = "github:windwp/nvim-autopairs";
       flake = false;
     };
 
-    dressing = {
-      url = "github:stevearc/dressing.nvim";
+    # Treesitter
+    treesitter = {
+      url = "github:nvim-treesitter/nvim-treesitter";
       flake = false;
     };
-    colorizer = {
-      url = "github:norcalli/nvim-colorizer.lua";
+    treesitter-refactor = {
+      url = "github:nvim-treesitter/nvim-treesitter-refactor";
       flake = false;
     };
-    comment = {
-      url = "github:numToStr/Comment.nvim";
+    treesitter-textobjects = {
+      url = "github:nvim-treesitter/nvim-treesitter-textobjects";
       flake = false;
     };
-    leap = {
-      url = "github:ggandor/leap.nvim";
-      flake = false;
-    };
-    surround = {
-      url = "github:ur4ltz/surround.nvim";
+    treesitter-context = {
+      url = "github:nvim-treesitter/nvim-treesitter-context";
       flake = false;
     };
 
@@ -148,6 +129,24 @@
       flake = false;
     };
 
+    # Tools
+    neogit = {
+      url = "github:TimUntersberger/neogit";
+      flake = false;
+    };
+    comment = {
+      url = "github:numToStr/Comment.nvim";
+      flake = false;
+    };
+    leap = {
+      url = "github:ggandor/leap.nvim";
+      flake = false;
+    };
+    surround = {
+      url = "github:ur4ltz/surround.nvim";
+      flake = false;
+    };
+
     # Statusline
     lualine = {
       url = "github:nvim-lualine/lualine.nvim";
@@ -155,17 +154,13 @@
     };
 
     # Themes
-    github-theme = {
-      url = "github:projekt0n/github-nvim-theme";
-      flake = false;
-    };
     base16 = {
       url = "github:RRethy/nvim-base16";
       flake = false;
     };
 
     # Visuals
-    nvim-cursorline = {
+    cursorline = {
       url = "github:yamatsum/nvim-cursorline";
       flake = false;
     };
@@ -173,12 +168,16 @@
       url = "github:lukas-reineke/indent-blankline.nvim";
       flake = false;
     };
-    gitsigns-nvim = {
+    gitsigns = {
       url = "github:lewis6991/gitsigns.nvim";
       flake = false;
     };
-    neogit = {
-      url = "github:TimUntersberger/neogit";
+    dressing = {
+      url = "github:stevearc/dressing.nvim";
+      flake = false;
+    };
+    colorizer = {
+      url = "github:norcalli/nvim-colorizer.lua";
       flake = false;
     };
   };
@@ -188,28 +187,18 @@
 
     # Plugin must be same as input name
     plugins = [
-      "plenary-nvim"
-      "nvim-lspconfig"
-      "nvim-treesitter"
-      "nvim-treesitter-refactor"
-      "nvim-treesitter-textobjects"
-      "nvim-treesitter-context"
-      "nvim-lightbulb"
-      "nvim-code-action-menu"
-      "lsp-signature"
+      "impatient"
+      "plenary"
+      "repeat"
+      "lspconfig"
       "null-ls"
-      "sqls-nvim"
-      "telescope"
-      "telescope-file-browser"
-      "telescope-project"
-      "telescope-ui-select"
-      "telescope-symbols"
-      "lualine"
-      "nvim-cmp"
+      "lsp-signature"
+      "code-action-menu"
+      "cmp"
       "cmp-buffer"
-      "cmp-nvim-lsp"
-      "cmp-nvim-lsp-signature"
       "cmp-path"
+      "cmp-lsp"
+      "cmp-lsp-signature"
       "cmp-calc"
       "cmp-spell"
       "cmp-digraphs"
@@ -217,19 +206,27 @@
       "luasnip"
       "friendly-snippets"
       "lspkind"
-      "nvim-autopairs"
+      "autopairs"
+      "treesitter"
+      "treesitter-refactor"
+      "treesitter-textobjects"
+      "treesitter-context"
+      "telescope"
+      "telescope-file-browser"
+      "telescope-project"
+      "telescope-ui-select"
+      "telescope-symbols"
+      "neogit"
       "comment"
       "leap"
       "surround"
+      "lualine"
+      "base16"
+      "cursorline"
+      "indent-blankline"
+      "gitsigns"
       "dressing"
       "colorizer"
-      "github-theme"
-      "base16"
-      "nvim-cursorline"
-      "indent-blankline"
-      "gitsigns-nvim"
-      "neogit"
-      "glow-nvim"
     ];
 
     pluginOverlay = lib.buildPluginOverlay;
@@ -240,10 +237,7 @@
       overlays = [ pluginOverlay ];
     };
 
-    lib =
-      import
-      ./lib
-      {inherit pkgs inputs plugins;};
+    lib = import ./lib {inherit pkgs inputs plugins;};
 
     neovimBuilder = lib.neovimBuilder;
 
@@ -254,7 +248,6 @@
         vim.lsp = {
           enable = true;
           formatOnSave = false;
-          lightbulb.enable = true;
           nvimCodeActionMenu.enable = true;
           lspSignature.enable = true;
           nix = true;

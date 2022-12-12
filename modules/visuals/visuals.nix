@@ -52,7 +52,7 @@ in {
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; [
       (addIf cfg.lspkind pkgs.neovimPlugins.lspkind)
-      (addIf cfg.wordline.enable nvim-cursorline)
+      (addIf cfg.wordline.enable cursorline)
       (addIf cfg.guides.enable indent-blankline)
       (addIf cfg.colorize colorizer)
       (addIf cfg.dressing dressing)
