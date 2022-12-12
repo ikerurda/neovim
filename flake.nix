@@ -135,7 +135,7 @@
       flake = false;
     };
     surround = {
-      url = "github:ur4ltz/surround.nvim";
+      url = "github:kylechui/nvim-surround";
       flake = false;
     };
 

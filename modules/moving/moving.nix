@@ -40,10 +40,7 @@ in {
       require("Comment").setup({ ignore = "^$" })
     ''}
     ${optionalString cfg.surround ''
-      require("surround").setup({
-        mappings_style = "surround",
-        map_insert_mode = false,
-      })
+      require("nvim-surround").setup()
     ''}
     '';
   };

@@ -20,7 +20,7 @@ in {
     wordline = {
       enable = mkEnableOption "word and delayed line highlight";
       timeout = mkOption {
-        description = "time in milliseconds for cursorline to appear";
+        description = "Time in milliseconds for cursorline to appear";
         type = types.int;
       };
     };
