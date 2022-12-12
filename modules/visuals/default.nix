@@ -9,7 +9,6 @@ with lib; {
   config.vim.visuals = {
     lspkind = mkDefault true;
     colorize = mkDefault true;
-    dressing = mkDefault true;
     wordline = {
       enable = mkDefault true;
       timeout = mkDefault 500;

@@ -29,7 +29,7 @@ in {
   config = mkIf cfg.enable {
     vim.startPlugins = [supported_themes.${cfg.name}.pkg];
 
-    vim.luaConfigRC =
+    vim.configRC =
       cfg.extraConfig
       + supported_themes.${cfg.name}.setup {inherit (cfg) style;};
   };

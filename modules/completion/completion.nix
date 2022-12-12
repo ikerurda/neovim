@@ -27,13 +27,12 @@ in {
       cmp-path
       cmp-calc
       cmp-spell
-      cmp-digraphs
     ]
     ++ (optionals config.vim.lsp.enable [cmp-lsp cmp-lsp-signature])
     ++ (optionals cfg.snippets [luasnip friendly-snippets cmp-luasnip])
     ++ (optional cfg.autopairs autopairs);
 
-    vim.luaConfigRC = ''
+    vim.configRC = ''
       local cmp = require("cmp")
     ${optionalString config.vim.visuals.lspkind ''
       local kind = require("lspkind")
@@ -64,7 +63,6 @@ in {
         ''}
           { name = "buffer", keyword_lenght = 5 },
           { name = "path" },
-          { name = "digraphs" },
           { name = "calc" },
           { name = "spell" },
         },
@@ -81,7 +79,6 @@ in {
             ''}
               buffer = "[buf]",
               path = "[path]",
-              digraphs = "[dig]",
               calc = "[calc]",
               spell = "[spell]",
             },

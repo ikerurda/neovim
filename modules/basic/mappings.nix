@@ -32,7 +32,7 @@ in {
   };
 
   config = {
-    vim.startLuaConfigRC = ''
+    vim.startConfigRC = ''
       vim.g.mapleader = "${cfg.leaderMapping}"
       vim.opt.timeoutlen = ${toString cfg.timeoutLen}
 

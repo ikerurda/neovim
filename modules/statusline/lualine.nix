@@ -59,9 +59,12 @@ in {
   };
 
   config = mkIf cfg.enable {
-    vim.startPlugins = with pkgs.neovimPlugins; [lualine];
+    vim.startPlugins = with pkgs.neovimPlugins; [
+      lualine
+    ]
+    ++ (optional config.vim.lsp.progress lsp-progress);
 
-    vim.luaConfigRC = ''
+    vim.configRC = ''
       require"lualine".setup({
         options = {
           globalstatus = ${luaBool cfg.global},

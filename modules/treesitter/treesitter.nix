@@ -37,7 +37,7 @@ in {
     ++ (optional cfg.textobjects treesitter-textobjects)
     ++ (optional cfg.context treesitter-context);
 
-    vim.luaConfigRC = ''
+    vim.configRC = ''
     ${optionalString cfg.fold ''
       vim.g.foldmethod = "expr"
       vim.g.foldexpr = "nvim_treesitter#foldexpr()"

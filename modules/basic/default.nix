@@ -5,7 +5,7 @@
   ...
 }:
 with lib; {
-  imports = [./basic.nix ./au.nix ./map.nix];
+  imports = [./options.nix ./autocommands.nix ./mappings.nix];
   config.vim = {
     mouse = mkDefault true;
     clipboard = mkDefault true;

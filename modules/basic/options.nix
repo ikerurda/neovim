@@ -67,7 +67,7 @@ in {
   config = {
     vim.startPlugins = with pkgs.neovimPlugins; [plenary impatient];
 
-    vim.startLuaConfigRC = ''
+    vim.startConfigRC = ''
     ${optionalString cfg.mouse ''
       vim.opt.mouse = "a"
     ''}
@@ -77,6 +77,7 @@ in {
       vim.opt.termguicolors = true
 
       vim.opt.showmode = false
+      vim.opt.confirm = true
       vim.opt.shortmess:append("asc")
       vim.opt.formatoptions = "njcrql"
       vim.opt.showcmd = true
@@ -105,6 +106,7 @@ in {
       vim.opt.linebreak = true
       vim.opt.breakindent = true
       vim.opt.cursorline = ${luaBool cfg.cursorLine}
+      vim.opt.virtualedit = "block"
 
       vim.opt.winbar = "%t%M"
       vim.opt.showtabline = 0

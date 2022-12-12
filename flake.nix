@@ -30,10 +30,6 @@
       url = "github:ray-x/lsp_signature.nvim";
       flake = false;
     };
-    code-action-menu = {
-      url = "github:weilbith/nvim-code-action-menu";
-      flake = false;
-    };
 
     # Autocomplete
     cmp = {
@@ -62,10 +58,6 @@
     };
     cmp-spell = {
       url = "github:f3fora/cmp-spell";
-      flake = false;
-    };
-    cmp-digraphs = {
-      url = "github:dmitmel/cmp-digraphs";
       flake = false;
     };
     cmp-luasnip = {
@@ -152,6 +144,10 @@
       url = "github:nvim-lualine/lualine.nvim";
       flake = false;
     };
+    lsp-progress = {
+      url = "github:arkav/lualine-lsp-progress";
+      flake = false;
+    };
 
     # Themes
     base16 = {
@@ -170,10 +166,6 @@
     };
     gitsigns = {
       url = "github:lewis6991/gitsigns.nvim";
-      flake = false;
-    };
-    dressing = {
-      url = "github:stevearc/dressing.nvim";
       flake = false;
     };
     colorizer = {
@@ -210,7 +202,7 @@
     # $ nix develop
     devShells.${system} = {
       default = pkgs.mkShell {
-        buildInputs = [neovimBuilder configBuilder];
+        buildInputs = [(neovimBuilder configBuilder)];
       };
     };
 

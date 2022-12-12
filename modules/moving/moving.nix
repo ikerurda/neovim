@@ -30,7 +30,7 @@ in {
     ++ (optional cfg.comment comment)
     ++ (optional cfg.surround surround);
 
-    vim.luaConfigRC = ''
+    vim.configRC = ''
     ${optionalString cfg.leap ''
       local leap = require("leap")
       leap.set_default_keymaps()

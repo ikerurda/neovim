@@ -4,7 +4,8 @@
   config,
   ...
 }:
-with lib; {
+with lib;
+with lib.strings; {
   imports = [./lualine.nix];
   config.vim.statusline = {
     enable = mkDefault true;
@@ -46,6 +47,12 @@ with lib; {
             update_in_insert = false,
             always_visible = false,
           },
+        ${optionalString config.vim.lsp.progress ''
+          {
+            "lsp_progress",
+            display_components = {"percentage"},
+          },
+        ''}
         }
       '';
       y = mkDefault ''{ "progress" }'';

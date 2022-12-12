@@ -16,7 +16,7 @@ in {
   };
 
   config = {
-    vim.startLuaConfigRC = ''
+    vim.startConfigRC = ''
       local user = vim.api.nvim_create_augroup("user", { clear = true })
 
       vim.api.nvim_create_autocmd("TermOpen", {

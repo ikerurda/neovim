@@ -25,7 +25,7 @@ in {
     ++ (optional cfg.signs gitsigns)
     ++ (optional cfg.neogit neogit);
 
-    vim.luaConfigRC = ''
+    vim.configRC = ''
     ${optionalString cfg.signs ''
       require("gitsigns").setup({ keymaps = {} })
     ''}

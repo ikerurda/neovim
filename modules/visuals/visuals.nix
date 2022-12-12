@@ -17,10 +17,6 @@ in {
       description = "Whether to enable colorizing";
       type = types.bool;
     };
-    dressing = mkOption {
-      description = "Whether to enable dressing";
-      type = types.bool;
-    };
     wordline = {
       enable = mkEnableOption "word and delayed line highlight";
       timeout = mkOption {
@@ -55,15 +51,13 @@ in {
     ++ (optional cfg.lspkind pkgs.neovimPlugins.lspkind)
     ++ (optional cfg.wordline.enable cursorline)
     ++ (optional cfg.guides.enable indent-blankline)
-    ++ (optional cfg.colorize colorizer)
-    ++ (optional cfg.dressing dressing);
+    ++ (optional cfg.colorize colorizer);
 
-    vim.luaConfigRC = ''
+    vim.configRC = ''
     ${optionalString cfg.lspkind ''
       require("lspkind").init()
     ''}
     ${optionalString cfg.guides.enable ''
-      -- highlight error: https://github.com/lukas-reineke/indent-blankline.nvim/issues/59
       vim.wo.colorcolumn = "99999"
       vim.opt.list = true
 
@@ -96,10 +90,6 @@ in {
 
     ${optionalString cfg.colorize ''
       require("colorizer").setup({}, { mode = "foreground" })
-    ''}
-
-    ${optionalString cfg.dressing ''
-      require("dressing").setup({})
     ''}
     '';
   };

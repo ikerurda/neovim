@@ -3,22 +3,19 @@
   lib,
   config,
   ...
-}: {
-  imports = [
-    ./lsp.nix
-    ./nvim-code-action-menu.nix
-    ./lsp-signature.nix
-  ];
+}:
+with lib; {
+  imports = [./lsp.nix];
+  config.vim.lsp = {
+    enable = mkDefault true;
+    signature = mkDefault true;
+    progress = mkDefault true;
+    formatOnSave = mkDefault false;
+    languages = {
+      nix = mkDefault true;
+      c = mkDefault true;
+      ts = mkDefault true;
+      py = mkDefault true;
+    };
+  };
 }
-
-#  vim.lsp = {↴                                   
-#    enable = true;↴                              
-#    formatOnSave = false;↴                       
-#    nvimCodeActionMenu.enable = true;↴           
-#    lspSignature.enable = true;↴                 
-#    nix = true;↴                                 
-#    python = isMaximal;↴                         
-#    clang.enable = isMaximal;↴                   
-#    sql = isMaximal;↴                            
-#    ts = isMaximal;↴                             
-#  };↴                                            

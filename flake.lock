@@ -80,22 +80,6 @@
         "type": "github"
       }
     },
-    "cmp-digraphs": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1639392485,
-        "narHash": "sha256-b4IFjTYvqodJokCGWyNJKShebSzz1UZ91vA5SthxORg=",
-        "owner": "dmitmel",
-        "repo": "cmp-digraphs",
-        "rev": "5efc1f0078d7c5f3ea1c8e3aad04da3fd6e081a9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dmitmel",
-        "repo": "cmp-digraphs",
-        "type": "github"
-      }
-    },
     "cmp-lsp": {
       "flake": false,
       "locked": {
@@ -176,22 +160,6 @@
         "type": "github"
       }
     },
-    "code-action-menu": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1665127936,
-        "narHash": "sha256-QvSP4ADZV0bCJTv3lwUNcVN/wr5XZ04d1/KIzKfLbqM=",
-        "owner": "weilbith",
-        "repo": "nvim-code-action-menu",
-        "rev": "58e12501ea028ff1171f8f06ea53891f7c6e1c3f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "weilbith",
-        "repo": "nvim-code-action-menu",
-        "type": "github"
-      }
-    },
     "colorizer": {
       "flake": false,
       "locked": {
@@ -237,22 +205,6 @@
       "original": {
         "owner": "yamatsum",
         "repo": "nvim-cursorline",
-        "type": "github"
-      }
-    },
-    "dressing": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1670226345,
-        "narHash": "sha256-JqzbNEZ/dLqOYWqFhkvV0By3M12IcyR3wsjGIjBnJTY=",
-        "owner": "stevearc",
-        "repo": "dressing.nvim",
-        "rev": "ed44aa798ab07dc298f43f35c8e0c93a1b335abb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "stevearc",
-        "repo": "dressing.nvim",
         "type": "github"
       }
     },
@@ -333,6 +285,22 @@
       "original": {
         "owner": "ggandor",
         "repo": "leap.nvim",
+        "type": "github"
+      }
+    },
+    "lsp-progress": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1634947677,
+        "narHash": "sha256-8HMtydFDzTxsuKvce+bIra9vZ9zHfEBHyR346W635b8=",
+        "owner": "arkav",
+        "repo": "lualine-lsp-progress",
+        "rev": "56842d097245a08d77912edf5f2a69ba29f275d7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arkav",
+        "repo": "lualine-lsp-progress",
         "type": "github"
       }
     },
@@ -504,22 +472,20 @@
         "cmp": "cmp",
         "cmp-buffer": "cmp-buffer",
         "cmp-calc": "cmp-calc",
-        "cmp-digraphs": "cmp-digraphs",
         "cmp-lsp": "cmp-lsp",
         "cmp-lsp-signature": "cmp-lsp-signature",
         "cmp-luasnip": "cmp-luasnip",
         "cmp-path": "cmp-path",
         "cmp-spell": "cmp-spell",
-        "code-action-menu": "code-action-menu",
         "colorizer": "colorizer",
         "comment": "comment",
         "cursorline": "cursorline",
-        "dressing": "dressing",
         "friendly-snippets": "friendly-snippets",
         "gitsigns": "gitsigns",
         "impatient": "impatient",
         "indent-blankline": "indent-blankline",
         "leap": "leap",
+        "lsp-progress": "lsp-progress",
         "lsp-signature": "lsp-signature",
         "lspconfig": "lspconfig",
         "lspkind": "lspkind",
