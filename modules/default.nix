@@ -1,20 +1,20 @@
 {
-  config,
-  lib,
   pkgs,
+  lib,
+  config,
   ...
 }: {
   imports = [
-    ./completion
-    ./theme
     ./core
     ./basic
-    ./statusline
-    ./visuals
-    ./moving
-    ./lsp
-    ./treesitter
-    ./telescope
+    ./completion
     ./git
+    ./lsp
+    ./moving
+    ./statusline
+    ./telescope
+    ./theme
+    ./treesitter
+    ./visuals
   ];
 }

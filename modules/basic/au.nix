@@ -5,12 +5,8 @@
   ...
 }:
 with lib;
-with builtins; let
-  cfg = config.vim;
-  writeIf = cond: msg:
-    if cond
-    then msg
-    else "";
+with lib.strings;
+let cfg = config.vim;
 in {
   options.vim = {
     highlightOnYank = mkOption {
@@ -20,8 +16,9 @@ in {
   };
 
   config = {
-    vim.luaConfigRC = ''
+    vim.startLuaConfigRC = ''
       local user = vim.api.nvim_create_augroup("user", { clear = true })
+
       vim.api.nvim_create_autocmd("TermOpen", {
         callback = function()
           vim.cmd "startinsert"
@@ -32,7 +29,8 @@ in {
         end,
         group = user,
       })
-    ${writeIf cfg.highlightOnYank ''
+
+    ${optionalString cfg.highlightOnYank ''
       vim.api.nvim_create_autocmd("TextYankPost", {
         callback = function()
           vim.highlight.on_yank { higroup = "IncSearch" }

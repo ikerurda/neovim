@@ -1,7 +1,7 @@
 {
-  config,
-  lib,
   pkgs,
+  lib,
+  config,
   ...
 }: {
   imports = [
@@ -10,3 +10,15 @@
     ./lsp-signature.nix
   ];
 }
+
+#  vim.lsp = {↴                                   
+#    enable = true;↴                              
+#    formatOnSave = false;↴                       
+#    nvimCodeActionMenu.enable = true;↴           
+#    lspSignature.enable = true;↴                 
+#    nix = true;↴                                 
+#    python = isMaximal;↴                         
+#    clang.enable = isMaximal;↴                   
+#    sql = isMaximal;↴                            
+#    ts = isMaximal;↴                             
+#  };↴                                            

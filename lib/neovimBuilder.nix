@@ -2,7 +2,9 @@
   pkgs,
   lib ? pkgs.lib,
   ...
-}: {config}: let
+}: {config}:
+with builtins;
+let
   neovimPlugins = pkgs.neovimPlugins;
   myNeovimUnwrapped = pkgs.neovim-unwrapped;
   vimOptions = lib.evalModules {
@@ -17,7 +19,7 @@ in
     configure = {
       customRC = vim.configRC;
       packages.myVimPackage = with neovimPlugins; {
-        start = builtins.filter (f: f != null) vim.startPlugins;
+        start = filter (f: f != null) vim.startPlugins;
         opt = vim.optPlugins;
       };
     };

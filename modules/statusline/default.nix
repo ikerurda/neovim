@@ -1,14 +1,14 @@
 {
   pkgs,
-  config,
   lib,
+  config,
   ...
 }:
 with lib; {
   imports = [./lualine.nix];
   config.vim.statusline = {
-    enable = mkDefault false;
-    theme = mkDefault "auto";
+    enable = mkDefault true;
+    theme = mkDefault "base16";
     global = mkDefault true;
     sectionSeparator = mkDefault "";
     componentSeparator = mkDefault "";

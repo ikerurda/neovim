@@ -5,12 +5,8 @@
   ...
 }:
 with lib;
-with builtins; let
-  cfg = config.vim;
-  writeIf = cond: msg:
-    if cond
-    then msg
-    else "";
+with lib.strings;
+let cfg = config.vim;
 in {
   options.vim = {
     leaderMapping = mkOption {
@@ -40,7 +36,7 @@ in {
   };
 
   config = {
-    vim.luaConfigRC = ''
+    vim.startLuaConfigRC = ''
       vim.g.mapleader = "${cfg.leaderMapping}"
       vim.opt.timeoutlen = ${toString cfg.timeoutLen}
 
@@ -53,15 +49,15 @@ in {
       vim.keymap.set("n", "J", "mzJ`z")
       vim.keymap.set("n", "n", "nzzzv")
       vim.keymap.set("n", "N", "Nzzzv")
-    ${writeIf cfg.mapMoveLine ''
+    ${optionalString cfg.mapMoveLine ''
       vim.keymap.set("v", "J", ":m '>+1<cr>gv=gv")
       vim.keymap.set("v", "K", ":m '<-2<cr>gv=gv")
     ''}
-    ${writeIf cfg.mapChangeWordDotRepeat ''
+    ${optionalString cfg.mapChangeWordDotRepeat ''
       vim.keymap.set("n", "cn", "*``cgn") -- Change word, <ESC>, repeat forwards with <.>
       vim.keymap.set("n", "cN", "*``cgN") -- Change word, <ESC>, repeat backwards with <.>
     ''}
-    ${writeIf cfg.mapCDtoGitOrCurrent ''
+    ${optionalString cfg.mapCDtoGitOrCurrent ''
       vim.keymap.set("n", "<c-t>", function()
         local folder = vim.fn.expand("%:h", true, false)
         local out = vim.fn.system("git -C " .. folder .. " rev-parse --show-toplevel")

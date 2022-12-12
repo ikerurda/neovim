@@ -1,16 +1,13 @@
 {
   pkgs,
-  config,
   lib,
+  config,
   ...
 }:
 with lib; {
   imports = [./git.nix];
-  config = {
-    vim.git = {
-      enable = mkDefault true;
-      signs = mkDefault true;
-      neogit = mkDefault true;
-    };
+  config.vim.git = {
+    signs = mkDefault true;
+    neogit = mkDefault true;
   };
 }

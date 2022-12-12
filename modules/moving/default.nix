@@ -1,7 +1,8 @@
-{ pkgs
-, config
-, lib
-, ...
+{
+  pkgs,
+  lib,
+  config,
+  ...
 }:
 with lib; {
   imports = [./moving.nix];

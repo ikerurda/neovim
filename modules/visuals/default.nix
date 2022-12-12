@@ -1,7 +1,8 @@
-{ pkgs
-, config
-, lib
-, ...
+{
+  pkgs,
+  lib,
+  config,
+  ...
 }:
 with lib; {
   imports = [./visuals.nix];
@@ -18,7 +19,7 @@ with lib; {
       guides = {
         enable = mkDefault true;
         listChar = mkDefault "│";
-        fillChar = mkDefault "·";
+        fillChar = mkDefault "";
         eolChar = mkDefault "↴";
         hiContext = mkDefault true;
       };

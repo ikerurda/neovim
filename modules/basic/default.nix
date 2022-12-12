@@ -1,14 +1,12 @@
 {
   pkgs,
-  config,
   lib,
+  config,
   ...
 }:
 with lib; {
   imports = [./basic.nix ./au.nix ./map.nix];
   config.vim = {
-    leaderMapping = mkDefault " ";
-    timeoutLen = mkDefault 1000;
     mouse = mkDefault true;
     clipboard = mkDefault true;
     ignoreCase = mkDefault true;
@@ -21,6 +19,8 @@ with lib; {
     wrap = mkDefault false;
     cursorLine = mkDefault true;
     disableBuiltins = mkDefault true;
+    leaderMapping = mkDefault " ";
+    timeoutLen = mkDefault 1000;
     mapMoveLine = mkDefault true;
     mapChangeWordDotRepeat = mkDefault true;
     mapCDtoGitOrCurrent = mkDefault true;

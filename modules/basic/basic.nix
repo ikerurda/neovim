@@ -5,12 +5,9 @@
   ...
 }:
 with lib;
-with builtins; let
+with lib.strings;
+let
   cfg = config.vim;
-  writeIf = cond: msg:
-    if cond
-    then msg
-    else "";
   luaBool = cond:
     if cond
     then "true"
@@ -78,11 +75,11 @@ in {
   config = {
     vim.startPlugins = with pkgs.neovimPlugins; [plenary impatient];
 
-    vim.luaConfigRC = ''
-    ${writeIf (cfg.mouse) ''
+    vim.startLuaConfigRC = ''
+    ${optionalString cfg.mouse ''
       vim.opt.mouse = "a"
     ''}
-    ${writeIf (cfg.clipboard) ''
+    ${optionalString cfg.clipboard ''
       vim.opt.clipboard = "unnamedplus"
     ''}
       vim.opt.termguicolors = true
@@ -100,22 +97,22 @@ in {
       vim.opt.smartcase = ${luaBool cfg.smartCase}
 
       vim.opt.signcolumn = "yes"
-      vim.opt.number = ${luaBool (cfg.number)}
-      vim.opt.relativenumber = ${luaBool (cfg.relativeNumber)}
+      vim.opt.number = ${luaBool cfg.number}
+      vim.opt.relativenumber = ${luaBool cfg.relativeNumber}
 
       vim.opt.scrolloff = ${toString cfg.scrolloff}
       vim.opt.sidescrolloff = ${toString cfg.scrolloff}
 
-      vim.opt.expandtab = ${luaBool (cfg.expandTab)}
+      vim.opt.expandtab = ${luaBool cfg.expandTab}
       vim.opt.tabstop = ${toString cfg.tabWidth}
       vim.opt.shiftwidth = 0
       vim.opt.softtabstop = -1
       vim.opt.autoindent = true
 
-      vim.opt.wrap = ${luaBool (cfg.wrap)}
+      vim.opt.wrap = ${luaBool cfg.wrap}
       vim.opt.linebreak = true
       vim.opt.breakindent = true
-      vim.opt.cursorline = ${luaBool (cfg.cursorLine)}
+      vim.opt.cursorline = ${luaBool cfg.cursorLine}
 
       vim.opt.winbar = "%t%M"
       vim.opt.showtabline = 0
@@ -126,7 +123,7 @@ in {
 
       vim.opt.undofile = true
 
-    ${writeIf (cfg.disableBuiltins) ''
+    ${optionalString cfg.disableBuiltins ''
       vim.g.loaded_gzip = true
       vim.g.loaded_zip = true
       vim.g.loaded_zipPlugin = true

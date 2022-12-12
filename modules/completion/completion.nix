@@ -5,16 +5,8 @@
   ...
 }:
 with lib;
-with builtins; let
-  cfg = config.vim.completion;
-  writeIf = cond: msg:
-    if cond
-    then msg
-    else "";
-  addIf = cond: pkg:
-    if cond
-    then pkg
-    else null;
+with lib.strings;
+let cfg = config.vim.completion;
 in {
   options.vim.completion = {
     enable = mkEnableOption "completion";
@@ -30,23 +22,20 @@ in {
       cmp-calc
       cmp-spell
       cmp-digraphs
-      (addIf config.vim.lsp.enable cmp-lsp)
-      (addIf config.vim.lsp.enable cmp-lsp-signature)
-      (addIf cfg.snippets luasnip)
-      (addIf cfg.snippets friendly-snippets)
-      (addIf cfg.snippets cmp-luasnip)
-      (addIf cfg.autopairs autopairs)
-    ];
+    ]
+    ++ (optionals config.vim.lsp.enable [cmp-lsp cmp-lsp-signature])
+    ++ (optionals cfg.snippets [luasnip friendly-snippets cmp-luasnip])
+    ++ (optional cfg.autopairs autopairs);
 
     vim.luaConfigRC = ''
       local cmp = require "cmp"
-    ${writeIf config.vim.visuals.lspkind ''
-      local kind = require "lspkind"
+    ${optionalString config.vim.visuals.lspkind ''
+      local kind = require("lspkind")
     ''}
-    ${writeIf cfg.snippets ''
-      local lsnip = require "luasnip"
+    ${optionalString cfg.snippets ''
+      local lsnip = require("luasnip")
     ''}
-      cmp.setup {
+      cmp.setup({
         mapping = {
           ["<c-space>"] = cmp.mapping.complete(),
           ["<c-c>"] = cmp.mapping.close(),
@@ -60,11 +49,11 @@ in {
           },
         },
         sources = {
-        ${writeIf config.vim.lsp.enable ''
+        ${optionalString config.vim.lsp.enable ''
           { name = "nvim_lsp" },
           { name = "nvim_lsp_signature_help" },
         ''}
-        ${writeIf cfg.snippets ''
+        ${optionalString cfg.snippets ''
           { name = "luasnip" },
         ''}
           { name = "buffer", keyword_lenght = 5 },
@@ -74,14 +63,14 @@ in {
           { name = "spell" },
         },
         formatting = {
-          format = ${writeIf config.vim.visuals.lspkind ''require"lspkind".cmp_format''} {
+          format = ${optionalString config.vim.visuals.lspkind ''require("lspkind").cmp_format''} {
             with_text = true,
             menu = {
-            ${writeIf config.vim.lsp.enable ''
+            ${optionalString config.vim.lsp.enable ''
               nvim_lsp = "[LSP]",
               nvim_lsp_signature_help = "[LSP]",
             ''}
-            ${writeIf cfg.snippets ''
+            ${optionalString cfg.snippets ''
               luasnip = "[snip]",
             ''}
               buffer = "[buf]",
@@ -92,7 +81,7 @@ in {
             },
           },
         },
-      ${writeIf cfg.snippets ''
+      ${optionalString cfg.snippets ''
         snippet = {
           expand = function(args)
             lsnip.lsp_expand(args.body)
@@ -100,13 +89,13 @@ in {
         },
       ''}
         experimental = { ghost_text = true },
-      }
+      })
 
-    ${writeIf cfg.snippets ''
-      lsnip.config.set_config {
+    ${optionalString cfg.snippets ''
+      lsnip.config.set_config({
         history = true,
         update_events = "TextChanged,TextChangedI",
-      }
+      })
 
       local snp, ins = lsnip.snippet, lsnip.insert_node
       local fmt = require("luasnip.extras.fmt").fmt
@@ -123,19 +112,6 @@ in {
             return os.date "%D - %H:%M"
           end)
         ),
-      })
-      lsnip.add_snippets("lua", {
-        snp(
-          "req",
-          fmt('local {} = require "{}"', {
-            fun(function(name)
-              local parts = vim.split(name[1][1], ".", true)
-              return parts[#parts] or ""
-            end, { 1 }),
-            ins(1),
-          })
-        ),
-        snp("todo", fmt("{}", { cho(1, { txt "-- TODO: ", txt "-- FIXME: " }) })),
       })
 
       local map = vim.keymap.set
@@ -156,11 +132,13 @@ in {
       end)
     ''}
 
-    ${writeIf cfg.autopairs ''
+    ${optionalString cfg.autopairs ''
       local pairs = require "nvim-autopairs.completion.cmp"
       cmp.event:on("confirm_done", pairs.on_confirm_done { map_char = { tex = "" } })
       require("nvim-autopairs").setup {
-        ${writeIf config.vim.treesitter.enable ''check_ts = true,''}
+      ${optionalString config.vim.treesitter.enable ''
+        check_ts = true,
+      ''}
         enable_moveright = false,
         fast_wrap = {},
       }

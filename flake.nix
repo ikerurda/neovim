@@ -182,134 +182,35 @@
     };
   };
 
-  outputs = {nixpkgs, ...} @ inputs: let
+  outputs = {nixpkgs, ...} @ inputs:
+  with builtins;
+  let
     system = "x86_64-linux";
-
-    # Plugin must be same as input name
-    plugins = [
-      "impatient"
-      "plenary"
-      "repeat"
-      "lspconfig"
-      "null-ls"
-      "lsp-signature"
-      "code-action-menu"
-      "cmp"
-      "cmp-buffer"
-      "cmp-path"
-      "cmp-lsp"
-      "cmp-lsp-signature"
-      "cmp-calc"
-      "cmp-spell"
-      "cmp-digraphs"
-      "cmp-luasnip"
-      "luasnip"
-      "friendly-snippets"
-      "lspkind"
-      "autopairs"
-      "treesitter"
-      "treesitter-refactor"
-      "treesitter-textobjects"
-      "treesitter-context"
-      "telescope"
-      "telescope-file-browser"
-      "telescope-project"
-      "telescope-ui-select"
-      "telescope-symbols"
-      "neogit"
-      "comment"
-      "leap"
-      "surround"
-      "lualine"
-      "base16"
-      "cursorline"
-      "indent-blankline"
-      "gitsigns"
-      "dressing"
-      "colorizer"
-    ];
-
-    pluginOverlay = lib.buildPluginOverlay;
 
     pkgs = import nixpkgs {
       inherit system;
       config = {allowUnfree = true;};
-      overlays = [ pluginOverlay ];
+      overlays = [lib.buildPluginOverlay];
     };
 
+    plugins = filter (input: input != "nixpkgs") (attrNames inputs);
     lib = import ./lib {inherit pkgs inputs plugins;};
 
-    neovimBuilder = lib.neovimBuilder;
-
-    configBuilder = isMaximal: {
-      config = {
-        vim.viAlias = false;
-        vim.vimAlias = true;
-        vim.lsp = {
-          enable = true;
-          formatOnSave = false;
-          nvimCodeActionMenu.enable = true;
-          lspSignature.enable = true;
-          nix = true;
-          python = isMaximal;
-          clang.enable = isMaximal;
-          sql = isMaximal;
-          ts = isMaximal;
-        };
-        vim.visuals = {
-          enable = true;
-          lspkind = true;
-          guides = {
-            enable = true;
-            listChar = "│";
-            fillChar = "";
-            eolChar = "↴";
-            hiContext = true;
-          };
-        };
-        vim.statusline = {
-          enable = true;
-          theme = "base16";
-        };
-        vim.theme = {
-          enable = true;
-          name = "custom";
-        };
-        vim.completion = {
-          enable = true;
-          autopairs = true;
-        };
-        vim.treesitter = {
-          enable = true;
-        };
-        vim.telescope = {
-          enable = true;
-          file-browser = true;
-          project = true;
-          ui-select = true;
-          symbols = true;
-        };
-        vim.git = {
-          enable = true;
-          signs = true;
-          neogit = true;
-        };
-      };
-    };
+    inherit (lib) neovimBuilder;
+    configBuilder = { config = {}; };
   in rec {
     # $ nix run
-    apps.${system} = rec {
-      nvim = {
+    apps.${system} = {
+      default = {
         type = "app";
         program = "${packages.${system}.default}/bin/nvim";
       };
-      default = nvim;
     };
 
     # $ nix develop
     devShells.${system} = {
       default = pkgs.mkShell {
-        buildInputs = [(neovimBuilder (configBuilder false))];
+        buildInputs = [neovimBuilder configBuilder];
       };
     };
 
@@ -319,9 +220,8 @@
       neovimPlugins = pkgs.neovimPlugins;
     };
 
-    packages.${system} = rec {
-      default = neovimKR;
-      neovimKR = neovimBuilder (configBuilder true);
+    packages.${system} = {
+      default = neovimBuilder configBuilder;
     };
   };
 }
