@@ -10,11 +10,17 @@ let cfg = config.vim.completion;
 in {
   options.vim.completion = {
     enable = mkEnableOption "completion";
-    snippets = mkEnableOption "snippets";
-    autopairs = mkEnableOption "autopairing";
+    snippets = mkOption {
+      description = "Whether to enable snippets completion";
+      type = types.bool;
+    };
+    autopairs = mkOption {
+      description = "Whether to enable autopairing";
+      type = types.bool;
+    };
   };
 
-  config = mkIf (cfg.enable) {
+  config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; [
       cmp
       cmp-buffer
@@ -28,7 +34,7 @@ in {
     ++ (optional cfg.autopairs autopairs);
 
     vim.luaConfigRC = ''
-      local cmp = require "cmp"
+      local cmp = require("cmp")
     ${optionalString config.vim.visuals.lspkind ''
       local kind = require("lspkind")
     ''}
@@ -133,15 +139,15 @@ in {
     ''}
 
     ${optionalString cfg.autopairs ''
-      local pairs = require "nvim-autopairs.completion.cmp"
-      cmp.event:on("confirm_done", pairs.on_confirm_done { map_char = { tex = "" } })
-      require("nvim-autopairs").setup {
+      local pairs = require("nvim-autopairs.completion.cmp")
+      cmp.event:on("confirm_done", pairs.on_confirm_done({ map_char = { tex = "" } }))
+      require("nvim-autopairs").setup({
       ${optionalString config.vim.treesitter.enable ''
         check_ts = true,
       ''}
         enable_moveright = false,
         fast_wrap = {},
-      }
+      })
     ''}
     '';
   };

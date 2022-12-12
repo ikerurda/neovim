@@ -13,22 +13,18 @@ in {
       description = "Set the <leader> mapping";
       type = types.str;
     };
-
     timeoutLen = mkOption {
       description = "Time in milliseconds to wait for a mapped sequence to complete";
       type = types.int;
     };
-
     mapMoveLine = mkOption {
       description = "Map movng lines up <K> or down <J> in visual mode";
       type = types.bool;
     };
-
     mapChangeWordDotRepeat = mkOption {
       description = "Map <cn> and <cN> to change word and enable dot-repeat in the next occurrence";
       type = types.bool;
     };
-
     mapCDtoGitOrCurrent = mkOption {
       description = "Map <C-t> to changing the cwd to the git root or the current file if not in a repo";
       type = types.bool;
@@ -54,8 +50,8 @@ in {
       vim.keymap.set("v", "K", ":m '<-2<cr>gv=gv")
     ''}
     ${optionalString cfg.mapChangeWordDotRepeat ''
-      vim.keymap.set("n", "cn", "*``cgn") -- Change word, <ESC>, repeat forwards with <.>
-      vim.keymap.set("n", "cN", "*``cgN") -- Change word, <ESC>, repeat backwards with <.>
+      vim.keymap.set("n", "cn", "*``cgn")
+      vim.keymap.set("n", "cN", "*``cgN")
     ''}
     ${optionalString cfg.mapCDtoGitOrCurrent ''
       vim.keymap.set("n", "<c-t>", function()

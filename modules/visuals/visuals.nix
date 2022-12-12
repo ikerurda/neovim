@@ -5,73 +5,73 @@
   ...
 }:
 with lib;
-with builtins; let
-  cfg = config.vim.visuals;
-  writeIf = cond: msg:
-    if cond
-    then msg
-    else "";
-  addIf = cond: pkg:
-    if cond
-    then pkg
-    else null;
+with lib.strings;
+let cfg = config.vim.visuals;
 in {
   options.vim.visuals = {
-    enable = mkEnableOption "visual enhancements";
-    lspkind = mkEnableOption "enable vscode-like pictograms for lsp [lspkind]";
-    colorize = mkEnableOption "enable vscode-like pictograms for lsp [lspkind]";
-    dressing = mkEnableOption "enable vscode-like pictograms for lsp [lspkind]";
+    lspkind = mkOption {
+      description = "Whether to enable lspkind icons";
+      type = types.bool;
+    };
+    colorize = mkOption {
+      description = "Whether to enable colorizing";
+      type = types.bool;
+    };
+    dressing = mkOption {
+      description = "Whether to enable dressing";
+      type = types.bool;
+    };
     wordline = {
-      enable = mkEnableOption "enable word and delayed line highlight [nvim-cursorline]";
+      enable = mkEnableOption "word and delayed line highlight";
       timeout = mkOption {
-        type = types.int;
         description = "time in milliseconds for cursorline to appear";
+        type = types.int;
       };
     };
     guides = {
-      enable = mkEnableOption "enable indentation guides [indent-blankline]";
+      enable = mkEnableOption "indentation guides";
       listChar = mkOption {
-        type = types.str;
         description = "Character for indentation line";
+        type = types.str;
       };
       fillChar = mkOption {
-        type = types.str;
         description = "Character to fill indents";
+        type = types.str;
       };
       eolChar = mkOption {
-        type = types.str;
         description = "Character at end of line";
+        type = types.str;
       };
       hiContext = mkOption {
-        type = types.bool;
         description = "Highlight current context from treesitter";
+        type = types.bool;
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
     vim.startPlugins = with pkgs.neovimPlugins; [
-      (addIf cfg.lspkind pkgs.neovimPlugins.lspkind)
-      (addIf cfg.wordline.enable cursorline)
-      (addIf cfg.guides.enable indent-blankline)
-      (addIf cfg.colorize colorizer)
-      (addIf cfg.dressing dressing)
-    ];
+    ]
+    ++ (optional cfg.lspkind pkgs.neovimPlugins.lspkind)
+    ++ (optional cfg.wordline.enable cursorline)
+    ++ (optional cfg.guides.enable indent-blankline)
+    ++ (optional cfg.colorize colorizer)
+    ++ (optional cfg.dressing dressing);
 
     vim.luaConfigRC = ''
-    ${writeIf cfg.lspkind ''
+    ${optionalString cfg.lspkind ''
       require("lspkind").init()
     ''}
-    ${writeIf cfg.guides.enable ''
+    ${optionalString cfg.guides.enable ''
       -- highlight error: https://github.com/lukas-reineke/indent-blankline.nvim/issues/59
       vim.wo.colorcolumn = "99999"
       vim.opt.list = true
 
-    ${writeIf (cfg.guides.eolChar != "") ''
+    ${optionalString (cfg.guides.eolChar != "") ''
       vim.opt.listchars:append({ eol = "${cfg.guides.eolChar}" })
     ''}
 
-    ${writeIf (cfg.guides.fillChar != "") ''
+    ${optionalString (cfg.guides.fillChar != "") ''
       vim.opt.listchars:append({ space = "${cfg.guides.fillChar}" })
     ''}
 
@@ -84,22 +84,22 @@ in {
         show_end_of_line = true,
         char = "${cfg.guides.listChar}",
         show_current_context = ${boolToString cfg.guides.hiContext},
-      ${writeIf config.vim.treesitter.enable ''
+      ${optionalString config.vim.treesitter.enable ''
         use_treesitter = true,
       ''}
       })
     ''}
 
-    ${writeIf cfg.wordline.enable ''
+    ${optionalString cfg.wordline.enable ''
       vim.g.cursorline_timeout = ${toString cfg.wordline.timeout}
     ''}
 
-    ${writeIf cfg.colorize ''
+    ${optionalString cfg.colorize ''
       require("colorizer").setup({}, { mode = "foreground" })
     ''}
 
-    ${writeIf cfg.dressing ''
-      require("dressing").setup {}
+    ${optionalString cfg.dressing ''
+      require("dressing").setup({})
     ''}
     '';
   };

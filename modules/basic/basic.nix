@@ -18,12 +18,10 @@ in {
       description = "Enable mouse support";
       type = types.bool;
     };
-
     clipboard = mkOption {
       description = "Enable system clipboard integration";
       type = types.bool;
     };
-
     ignoreCase = mkOption {
       description = "Ignore case in search patterns";
       type = types.bool;
@@ -32,7 +30,6 @@ in {
       description = "Override the 'ignoreCase' option if the search pattern contains upper case characters";
       type = types.bool;
     };
-
     number = mkOption {
       description = "Print the line number in front of each line";
       type = types.bool;
@@ -41,12 +38,10 @@ in {
       description = "Show the line number relative to the line with the cursor in front of each line";
       type = types.bool;
     };
-
     scrolloff = mkOption {
       description = "Minimal number of screen lines or columns to keep around the cursor";
       type = types.int;
     };
-
     expandTab = mkOption {
       description = "Use the appropriate number of spaces to insert a <Tab>";
       type = types.bool;
@@ -55,17 +50,14 @@ in {
       description = "Number of spaces that a <tab> in the file counts for";
       type = types.int;
     };
-
     wrap = mkOption {
       description = "When on, lines longer than the width of the window will wrap and displaying continues on the next line";
       type = types.bool;
     };
-
     cursorLine = mkOption {
       description = "Highlight the text line of the cursor";
       type = types.bool;
     };
-
     disableBuiltins = mkOption {
       description = "Whether to disable unnecessary builtins";
       type = types.bool;

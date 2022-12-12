@@ -9,13 +9,20 @@ with lib.strings;
 let cfg = config.vim.git;
 in {
   options.vim.git = {
-    signs = mkEnableOption "[gitsigns]";
-    neogit = mkEnableOption "[neogit]";
+    signs = mkOption {
+      description = "Whether to enable git signs";
+      type = types.bool;
+    };
+    neogit = mkOption {
+      description = "Whether to enable neogit";
+      type = types.bool;
+    };
   };
 
   config = {
-    vim.startPlugins = with pkgs.neovimPlugins;
-    (optional cfg.signs gitsigns)
+    vim.startPlugins = with pkgs.neovimPlugins; [
+    ]
+    ++ (optional cfg.signs gitsigns)
     ++ (optional cfg.neogit neogit);
 
     vim.luaConfigRC = ''

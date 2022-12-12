@@ -5,48 +5,48 @@
   ...
 }:
 with lib;
-with builtins; let
-  cfg = config.vim.telescope;
-  writeIf = cond: msg:
-    if cond
-    then msg
-    else "";
-  addIf = cond: pkg:
-    if cond
-    then pkg
-    else null;
-  mapIf = cond: map:
-    if cond
-    then map
-    else {};
+with lib.strings;
+let cfg = config.vim.telescope;
 in {
   options.vim.telescope = {
-    enable = mkEnableOption "[telescope]";
-    file-browser = mkEnableOption "[telescope-file-browser]";
-    project = mkEnableOption "[telescope-project]";
-    ui-select = mkEnableOption "[telescope-ui-select]";
-    symbols = mkEnableOption "[telescope-symbols]";
+    enable = mkEnableOption "telescope";
+    file-browser = mkOption {
+      description = "Whether to enable telescope file browser";
+      type = types.bool;
+    };
+    project = mkOption {
+      description = "Whether to enable telescope project";
+      type = types.bool;
+    };
+    ui-select = mkOption {
+      description = "Whether to enable telescope ui select";
+      type = types.bool;
+    };
+    symbols = mkOption {
+      description = "Whether to enable telescope symbols";
+      type = types.bool;
+    };
   };
 
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; [
       telescope
-      (addIf cfg.file-browser telescope-file-browser)
-      (addIf cfg.project telescope-project)
-      (addIf cfg.ui-select telescope-ui-select)
-      (addIf cfg.symbols telescope-symbols)
-    ];
+    ]
+    ++ (optional cfg.file-browser telescope-file-browser)
+    ++ (optional cfg.project telescope-project)
+    ++ (optional cfg.ui-select telescope-ui-select)
+    ++ (optional cfg.symbols telescope-symbols);
 
     vim.luaConfigRC = ''
-    ${writeIf cfg.file-browser ''
-      local action_state = require "telescope.actions.state"
-      local builtin = require "telescope.builtin"
+    ${optionalString cfg.file-browser ''
+      local action_state = require("telescope.actions.state")
+      local builtin = require("telescope.builtin")
       local open_in = function(finder)
         return function()
           local entry_path = action_state.get_selected_entry().Path
           local path = entry_path:is_dir() and entry_path:absolute()
               or entry_path:parent():absolute()
-          finder { cwd = path }
+          finder({ cwd = path })
         end
       end
       local open_in_fb = function()
@@ -54,14 +54,14 @@ in {
         local fb = require("telescope").extensions.file_browser.file_browser
         local entry_path = Path:new(action_state.get_selected_entry()[1])
         local path = entry_path:parent():absolute()
-        fb { path = path }
+        fb({ path = path })
       end
     ''}
 
-      local actions = require "telescope.actions"
-      local layout_actions = require "telescope.actions.layout"
-      local telescope = require "telescope"
-      telescope.setup {
+      local actions = require("telescope.actions")
+      local layout_actions = require("telescope.actions.layout")
+      local telescope = require("telescope")
+      telescope.setup({
         defaults = {
           prompt_prefix = " ",
           selection_caret = "  ",
@@ -82,11 +82,11 @@ in {
           }},
         },
         pickers = {
-        ${writeIf cfg.file-browser ''
+        ${optionalString cfg.file-browser ''
           oldfiles = { mappings = { i = { ["<a-e>"] = open_in_fb } } },
           find_files = { mappings = { i = { ["<a-e>"] = open_in_fb } } },
         ''}
-        ${writeIf config.vim.lsp.enable ''
+        ${optionalString config.vim.lsp.enable ''
           diagnostics = { theme = "cursor", previewer = false },
         ''}
           buffers = {
@@ -96,7 +96,7 @@ in {
           },
         },
         extensions = {
-        ${writeIf cfg.file-browser ''
+        ${optionalString cfg.file-browser ''
           file_browser = {
             dir_icon = "=",
             grouped = true,
@@ -113,31 +113,40 @@ in {
             },
           },
         ''}
-        ${writeIf cfg.project ''
+        ${optionalString cfg.project ''
           project = { theme = "dropdown", browse_by_default = true },
         ''}
         },
-      }
-    ${writeIf cfg.file-browser ''telescope.load_extension "file_browser"''}
-    ${writeIf cfg.project ''telescope.load_extension "project"''}
-    ${writeIf cfg.ui-select ''telescope.load_extension "ui-select"''}
-    '';
+      })
 
-    vim.nnoremap =
-      {
-        "<leader>fr" = "<cmd>Telescope oldfiles<cr>";
-        "<leader>ft" = "<cmd>Telescope resume<cr>";
-        "<leader>fb" = "<cmd>Telescope buffers<cr>";
-        "<leader>ff" = "<cmd>Telescope find_files<cr>";
-        "<leader>fg" = "<cmd>Telescope live_grep<cr>";
-        "<leader>fs" = "<cmd>Telescope grep_string<cr>";
-        "<leader>fa" = "<cmd>Telescope current_buffer_fuzzy_find<cr>";
-        "<leader>fh" = "<cmd>Telescope help_tags<cr>";
-        "<leader>fm" = "<cmd>Telescope man_pages<cr>";
-      }
-      // (mapIf cfg.file-browser {"<leader>fe" = "<cmd>Telescope file_browser<CR>";})
-      // (mapIf cfg.project {"<leader>fj" = "<cmd>Telescope project<CR>";})
-      // (mapIf cfg.symbols {"<leader>fv" = "<cmd>Telescope symbols<CR>";})
-      // (mapIf config.vim.lsp.enable {"<leader>fd" = "<cmd>Telescope diagnostics<CR>";});
+      local builtin = require('telescope.builtin')
+      vim.keymap.set('n', '<leader>fr', builtin.oldfiles)
+      vim.keymap.set('n', '<leader>ft', builtin.resume)
+      vim.keymap.set('n', '<leader>fb', builtin.buffers)
+      vim.keymap.set('n', '<leader>ff', builtin.find_files)
+      vim.keymap.set('n', '<leader>fg', builtin.live_grep)
+      vim.keymap.set('n', '<leader>fs', builtin.grep_string)
+      vim.keymap.set('n', '<leader>fg', builtin.help_tags)
+      vim.keymap.set('n', '<leader>fm', builtin.man_pages)
+
+      local extensions = require("telescope").extensions
+    ${optionalString cfg.symbols ''
+      vim.keymap.set("n", "<leader>fv", builtin.symbols)
+    ''}
+    ${optionalString config.vim.lsp.enable ''
+      vim.keymap.set("n", "<leader>fd", builtin.diagnostics)
+    ''}
+    ${optionalString cfg.file-browser ''
+      telescope.load_extension("file_browser")
+      vim.keymap.set("n", "<leader>fe", extensions.file_browser.file_browser)
+    ''}
+    ${optionalString cfg.project ''
+      telescope.load_extension("project")
+      vim.keymap.set("n", "<leader>fj", extensions.project.project)
+    ''}
+    ${optionalString cfg.ui-select ''
+      telescope.load_extension("ui-select")
+    ''}
+    '';
   };
 }

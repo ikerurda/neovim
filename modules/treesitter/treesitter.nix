@@ -5,44 +5,48 @@
   ...
 }:
 with lib;
-with builtins; let
-  cfg = config.vim.treesitter;
-  writeIf = cond: msg:
-    if cond
-    then msg
-    else "";
-  addIf = cond: pkg:
-    if cond
-    then pkg
-    else null;
+with lib.strings;
+let cfg = config.vim.treesitter;
 in {
   options.vim.treesitter = {
-    enable = mkEnableOption "nvim-treesitter";
-    fold = mkEnableOption "fold with tree-sitter";
-    refactor = mkEnableOption "refactor with tree-sitter";
-    textobjects = mkEnableOption "tree-sitter's textobjects";
-    context = mkEnableOption "tree-sitter's context";
+    enable = mkEnableOption "treesitter";
+    fold = mkOption {
+      description = "Whether to enable treesitter folding";
+      type = types.bool;
+    };
+    refactor = mkOption {
+      description = "Whether to enable treesitter refactoring";
+      type = types.bool;
+    };
+    textobjects = mkOption {
+      description = "Whether to enable treesitter textobjects";
+      type = types.bool;
+    };
+    context = mkOption {
+      description = "Whether to enable treesitter context";
+      type = types.bool;
+    };
   };
 
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; [
       treesitter
-      (addIf cfg.refactor treesitter-refactor)
-      (addIf cfg.textobjects treesitter-textobjects)
-      (addIf cfg.context treesitter-context)
       (pkgs.vimPlugins.nvim-treesitter.withAllGrammars)
-    ];
+    ]
+    ++ (optional cfg.refactor treesitter-refactor)
+    ++ (optional cfg.textobjects treesitter-textobjects)
+    ++ (optional cfg.context treesitter-context);
 
     vim.luaConfigRC = ''
-    ${writeIf cfg.fold ''
+    ${optionalString cfg.fold ''
       vim.g.foldmethod = "expr"
       vim.g.foldexpr = "nvim_treesitter#foldexpr()"
       vim.g.foldable = false
     ''}
-      require"nvim-treesitter.configs".setup {
+      require("nvim-treesitter.configs").setup({
         indent = { enable = true },
         highlight = { enable = true },
-      ${writeIf cfg.refactor ''
+      ${optionalString cfg.refactor ''
         refactor = {
           smart_rename = { enable = true, keymaps = { smart_rename = "gr" } },
           highlight_definitions = { enable = true },
@@ -58,7 +62,7 @@ in {
             node_decremental = "<c-k>",
           },
         },
-      ${writeIf cfg.textobjects ''
+      ${optionalString cfg.textobjects ''
         textobjects = {
           select = {
             enable = true,
@@ -91,13 +95,13 @@ in {
           },
         },
       ''}
-      }
-    ${writeIf cfg.context ''
-      require"treesitter-context".setup {
+      })
+    ${optionalString cfg.context ''
+      require("treesitter-context").setup({
         enable = true,
         throttle = true,
         max_lines = 0
-      }
+      })
     ''}
     '';
   };

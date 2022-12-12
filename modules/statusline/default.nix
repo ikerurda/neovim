@@ -14,7 +14,7 @@ with lib; {
     componentSeparator = mkDefault "";
     section = {
       a = mkDefault ''{ "mode" }'';
-      b = ''
+      b = mkDefault ''
         {
           {
             "filename",

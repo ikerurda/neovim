@@ -5,74 +5,69 @@
   ...
 }:
 with lib;
-with builtins; let
+let
   cfg = config.vim.statusline;
-  toBool = cond:
+  luaBool = cond:
     if cond
     then "true"
     else "false";
 in {
   options.vim.statusline = {
     enable = mkEnableOption "lualine";
-    global = mkEnableOption "global statusline";
-
+    global = mkOption {
+      description = "Whether to enable global statusline";
+      type = types.bool;
+    };
     theme = mkOption {
+      description = "Statusline theme";
       type = types.str;
-      description = "Lualine theme";
     };
-
     sectionSeparator = mkOption {
+      description = "Statusline section separator";
       type = types.str;
-      description = "Section separator";
     };
-
     componentSeparator = mkOption {
+      description = "Statusline component separator";
       type = types.str;
-      description = "Component separator";
     };
-
     section = {
       a = mkOption {
+        description = "Section config for: |(A)|B|C   X|Y|Z|";
         type = types.str;
-        description = "Section config for: | (A) | B | C       X | Y | Z |";
       };
-
       b = mkOption {
+        description = "Section config for: |A|(B)|C   X|Y|Z|";
         type = types.str;
-        description = "Section config for: | A | (B) | C       X | Y | Z |";
       };
-
       c = mkOption {
+        description = "Section config for: |A|B|(C)   X|Y|Z|";
         type = types.str;
-        description = "Section config for: | A | B | (C)       X | Y | Z |";
       };
-
       x = mkOption {
+        description = "Section config for: |A|B|C   (X)|Y|Z|";
         type = types.str;
-        description = "Section config for: | A | B | C       (X) | Y | Z |";
       };
-
       y = mkOption {
+        description = "Section config for: |A|B|C   X|(Y)|Z|";
         type = types.str;
-        description = "Section config for: | A | B | C       X | (Y) | Z |";
       };
-
       z = mkOption {
+        description = "Section config for: |A|B|C   X|Y|(Z)|";
         type = types.str;
-        description = "Section config for: | A | B | C       X | Y | (Z) |";
       };
     };
   };
 
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; [lualine];
+
     vim.luaConfigRC = ''
-      require"lualine".setup {
+      require"lualine".setup({
         options = {
+          globalstatus = ${luaBool cfg.global},
           theme = "${cfg.theme}",
           component_separators = "${cfg.componentSeparator}",
           section_separators = "${cfg.sectionSeparator}",
-          globalstatus = ${toBool cfg.global},
         },
         sections = {
           lualine_a = ${cfg.section.a},
@@ -82,7 +77,7 @@ in {
           lualine_y = ${cfg.section.y},
           lualine_z = ${cfg.section.z},
         },
-      }
+      })
     '';
   };
 }
