@@ -100,7 +100,6 @@ in {
           file_browser = {
             dir_icon = "=",
             grouped = true,
-            hide_parent_dir = true,
             cwd_to_path = true,
             select_buffer = true,
             respect_gitignore = false,
