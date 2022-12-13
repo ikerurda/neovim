@@ -78,8 +78,9 @@ in {
         }),
       ''}
       ${optionalString cfg.languages.ts ''
-        null.builtins.diagnostics.eslint,
-        null.builtins.formatting.prettier,
+        null.builtins.formatting.prettier.with({
+          command = "${pkgs.nodePackages.prettier}/bin/prettier",
+        }),
       ''}
       }
 
@@ -129,10 +130,10 @@ in {
 
     ${optionalString cfg.languages.c ''
       vim.g.c_syntax_for_h = true
-      lspconfig.ccls.setup({
+      lspconfig.clangd.setup({
         capabilities = capabilities,
         on_attach = default_on_attach,
-        cmd = { "${pkgs.ccls}/bin/ccls" },
+        cmd = {'${pkgs.clang-tools}/bin/clangd', '--background-index'};
       })
     ''}
 
@@ -140,7 +141,10 @@ in {
       lspconfig.tsserver.setup({
         capabilities = capabilities,
         on_attach = default_on_attach,
-        cmd = { "${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server", "--stdio" },
+        cmd = { "${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server",
+                "--stdio", "--tsserver-path",
+                "${pkgs.typescript}/lib/node_modules/typescript/lib"
+              }
       })
     ''}
 
