@@ -49,11 +49,10 @@ in {
     ''}
     ${optionalString cfg.neogit ''
       require("neogit").setup({
-        disable_builtin_notifications = true;
+        disable_builtin_notifications = true,
+        disable_insert_on_commit = true,
       });
-      vim.keymap.set("n", "<leader>g", function()
-        require("neogit").open({ cwd = vim.fn.expand("%:h", true, false) })
-      end)
+      vim.keymap.set("n", "<leader>g", function() require("neogit").open() end)
     ''}
     ${optionalString cfg.leap ''
       local leap = require("leap")
