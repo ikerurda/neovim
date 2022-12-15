@@ -31,6 +31,7 @@ in {
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; [
       telescope
+      pkgs.vimPlugins.telescope-fzf-native-nvim
     ]
     ++ (optional cfg.file-browser telescope-file-browser)
     ++ (optional cfg.project telescope-project)
@@ -134,6 +135,7 @@ in {
       vim.keymap.set("n", "<leader>fm", builtin.man_pages)
 
       local extensions = require("telescope").extensions
+      telescope.load_extension("fzf")
     ${optionalString cfg.symbols ''
       vim.keymap.set("n", "<leader>fv", builtin.symbols)
     ''}
