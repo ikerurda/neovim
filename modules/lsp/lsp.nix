@@ -105,7 +105,6 @@ in {
       end
 
       default_on_attach = function(client, bufnr)
-        client.offset_encoding = "utf-8"
         attach_keymaps(client, bufnr)
       ${optionalString cfg.formatOnSave ''
         format_callback(client, bufnr)
@@ -129,6 +128,7 @@ in {
     ${optionalString (config.vim.completion.enable && config.vim.completion.snippets) ''
       capabilities.textDocument.completion.completionItem.snippetSupport = true
     ''}
+      capabilities.offsetEncoding = "utf-8"
 
     ${optionalString cfg.languages.nix ''
       lspconfig.rnix.setup({
@@ -143,7 +143,7 @@ in {
       lspconfig.clangd.setup({
         capabilities = capabilities,
         on_attach = default_on_attach,
-        cmd = {"${pkgs.clang-tools}/bin/clangd", "--background-index"};
+        cmd = { "${pkgs.clang-tools}/bin/clangd" };
       })
     ''}
 
