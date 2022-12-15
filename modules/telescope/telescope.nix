@@ -67,7 +67,7 @@ in {
           prompt_prefix = " ",
           selection_caret = "  ",
           multi_icon = "• ",
-          path_display = { ["truncate"] = 3 },
+          path_display = { truncate = 3 },
           sorting_strategy = "ascending",
           layout_strategy = "vertical",
           layout_config = {

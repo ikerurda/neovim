@@ -3,10 +3,9 @@ This config is based upon [gako358s](https://github.com/Gako358/neovim)
 and [jordanisaacs](https://github.com/jordanisaacs/neovim-flake) configs.
 
 ## How to use
-1. Remotely: `nix run github:ikerurda/neovim`
-2. From the cloned repository:
-a) `nix run` runs the app and `nix develop` bulds the shell
-b) You can also modify the package with the overlay:
+Remotely with `nix run github:ikerurda/neovim` or from the cloned repository:  
+1) Run the app (`nix run`) or build a shell (`nix develop`)
+2) Modify the package with the overlay:
 ```
 overlays = [
   neovim.overlays.default
@@ -19,14 +18,13 @@ overlays = [
   })
 ];
 ```
-Then just add the package `customNeovim` to `home.pacages`
+Then just add the package `customNeovim` to `home.packages`
 
-c). Or you could leave the default configuration:
+3) Or leave the default configuration:
 ```
 home.packages = with pkgs; [ inputs.neovim.packages."x86_64-linux".default ];
 ```
-or
-
+4) Or:
 ```
 overlays = [
   neovim.overlays.default

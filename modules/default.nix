@@ -8,9 +8,8 @@
     ./core
     ./basic
     ./completion
-    ./git
     ./lsp
-    ./moving
+    ./tools
     ./statusline
     ./telescope
     ./theme
