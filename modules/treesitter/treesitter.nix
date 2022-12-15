@@ -50,7 +50,7 @@ in {
         refactor = {
           smart_rename = { enable = true, keymaps = { smart_rename = "gr" } },
           highlight_definitions = { enable = true },
-          highlight_current_scope = { enable = false },
+          highlight_current_scope = { enable = true },
         },
       ''}
         incremental_selection = {

@@ -154,10 +154,6 @@
     };
 
     # Visuals
-    cursorline = {
-      url = "github:yamatsum/nvim-cursorline";
-      flake = false;
-    };
     indent-blankline = {
       url = "github:lukas-reineke/indent-blankline.nvim";
       flake = false;

@@ -6,21 +6,20 @@
 }:
 with lib;
 with lib.strings;
-let
-  cfg = config.vim;
-  luaBool = cond:
-    if cond
-    then "true"
-    else "false";
+let cfg = config.vim;
 in {
   options.vim = {
     mouse = mkOption {
-      description = "Enable mouse support";
-      type = types.bool;
+      description = "Enable mouse support: a (all), n (normal), v (visual), i (insert), c (command)";
+      type = types.str;
     };
     clipboard = mkOption {
       description = "Enable system clipboard integration";
       type = types.bool;
+    };
+    updatetime = mkOption {
+      description = "Time in ms used for CursorHold and interval to update the swap file";
+      type = types.int;
     };
     ignoreCase = mkOption {
       description = "Ignore case in search patterns";
@@ -68,9 +67,7 @@ in {
     vim.startPlugins = with pkgs.neovimPlugins; [plenary impatient];
 
     vim.startConfigRC = ''
-    ${optionalString cfg.mouse ''
-      vim.opt.mouse = "a"
-    ''}
+      vim.opt.mouse = "${cfg.mouse}"
     ${optionalString cfg.clipboard ''
       vim.opt.clipboard = "unnamedplus"
     ''}
@@ -82,34 +79,34 @@ in {
       vim.opt.formatoptions = "njcrql"
       vim.opt.showcmd = true
       vim.opt.cmdheight = 1
+      vim.opt.updatetime = ${toString cfg.updatetime}
 
       vim.opt.inccommand = "split"
       vim.opt.incsearch = true
       vim.opt.hlsearch = false
-      vim.opt.ignorecase = ${luaBool cfg.ignoreCase}
-      vim.opt.smartcase = ${luaBool cfg.smartCase}
+      vim.opt.ignorecase = ${boolToString cfg.ignoreCase}
+      vim.opt.smartcase = ${boolToString cfg.smartCase}
 
       vim.opt.signcolumn = "yes"
-      vim.opt.number = ${luaBool cfg.number}
-      vim.opt.relativenumber = ${luaBool cfg.relativeNumber}
+      vim.opt.number = ${boolToString cfg.number}
+      vim.opt.relativenumber = ${boolToString cfg.relativeNumber}
 
       vim.opt.scrolloff = ${toString cfg.scrolloff}
       vim.opt.sidescrolloff = ${toString cfg.scrolloff}
 
-      vim.opt.expandtab = ${luaBool cfg.expandTab}
+      vim.opt.expandtab = ${boolToString cfg.expandTab}
       vim.opt.tabstop = ${toString cfg.tabWidth}
       vim.opt.shiftwidth = 0
       vim.opt.softtabstop = -1
       vim.opt.autoindent = true
 
-      vim.opt.wrap = ${luaBool cfg.wrap}
+      vim.opt.wrap = ${boolToString cfg.wrap}
       vim.opt.linebreak = true
       vim.opt.breakindent = true
-      vim.opt.cursorline = ${luaBool cfg.cursorLine}
+      vim.opt.cursorline = ${boolToString cfg.cursorLine}
       vim.opt.virtualedit = "block"
 
       vim.opt.winbar = "%t%M"
-      vim.opt.showtabline = 0
 
       vim.opt.equalalways = false
       vim.opt.splitright = true

@@ -24,10 +24,6 @@ in {
       description = "Vim lua config";
       type = types.lines;
     };
-    finalRC = mkOption {
-      description = "Final vim lua config used by the builder";
-      type = types.lines;
-    };
     startPlugins = mkOption {
       description = "List of plugins to startup";
       type = with types; listOf package;
@@ -36,14 +32,5 @@ in {
       description = "List of plugins to optionally load";
       type = with types; listOf package;
     };
-  };
-
-  config = {
-    vim.finalRC = ''
-      lua << EOF
-      ${cfg.startConfigRC}
-      ${cfg.configRC}
-      EOF
-    '';
   };
 }

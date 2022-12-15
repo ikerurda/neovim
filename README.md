@@ -1,15 +1,37 @@
-# Custom NeoVim config flake
-This config is based upon [gako358s config](https://github.com/Gako358/neovim).
+# Custom NeoVim flake config
+This config is based upon [gako358s](https://github.com/Gako358/neovim)
+and [jordanisaacs](https://github.com/jordanisaacs/neovim-flake) configs.
 
 ## How to use
-Clone the repo and run the following from the directory:
+1. `nix run` runs the app and `nix develop` bulds the shell
+
+2. You can also modify the package with the overlay:
 ```
-nix run .#
+overlays = [
+  neovim.overlays.default
+  (final: prev: {
+    customNeovim = prev.neovimBuilder {
+      config = {
+        vim.lsp.enable = false;
+      };
+    };
+  })
+];
+```
+Then just add the package `customNeovim` to `home.pacages`
+
+4. Or you could leave the default configuration:
+```
+home.packages = with pkgs; [ inputs.neovim.packages."x86_64-linux".default ];
 ```
 or
+
 ```
-nix run github:ikerurda/neovim#.
+overlays = [
+  neovim.overlays.default
+];
 ```
+Then just add the package `neovimKR` to `home.pacages`
 
 ## How to update plugins
 ```
@@ -18,8 +40,10 @@ nix flake update
 
 ## Folder structure
 ```
+.
 |-[lib] -- Contains utility functions
 |-[modules] -- Contains modules which are used to configure neovim
+|-flake.lock -- Lock file
 |-flake.nix -- Flake file
 |-README.md -- This file
 ```

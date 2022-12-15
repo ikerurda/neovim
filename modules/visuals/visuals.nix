@@ -17,13 +17,6 @@ in {
       description = "Whether to enable colorizing";
       type = types.bool;
     };
-    wordline = {
-      enable = mkEnableOption "word and delayed line highlight";
-      timeout = mkOption {
-        description = "Time in milliseconds for cursorline to appear";
-        type = types.int;
-      };
-    };
     guides = {
       enable = mkEnableOption "indentation guides";
       listChar = mkOption {
@@ -39,7 +32,7 @@ in {
         type = types.str;
       };
       hiContext = mkOption {
-        description = "Highlight current context from treesitter";
+        description = "Highlight current context with treesitter";
         type = types.bool;
       };
     };
@@ -48,8 +41,7 @@ in {
   config = {
     vim.startPlugins = with pkgs.neovimPlugins; [
     ]
-    ++ (optional cfg.lspkind pkgs.neovimPlugins.lspkind)
-    ++ (optional cfg.wordline.enable cursorline)
+    ++ (optional cfg.lspkind lspkind)
     ++ (optional cfg.guides.enable indent-blankline)
     ++ (optional cfg.colorize colorizer);
 
@@ -78,14 +70,8 @@ in {
         show_end_of_line = true,
         char = "${cfg.guides.listChar}",
         show_current_context = ${boolToString cfg.guides.hiContext},
-      ${optionalString config.vim.treesitter.enable ''
-        use_treesitter = true,
-      ''}
+        use_treesitter = ${boolToString config.vim.treesitter.enable},
       })
-    ''}
-
-    ${optionalString cfg.wordline.enable ''
-      vim.g.cursorline_timeout = ${toString cfg.wordline.timeout}
     ''}
 
     ${optionalString cfg.colorize ''

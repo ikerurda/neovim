@@ -9,9 +9,12 @@ with lib.strings;
 let cfg = config.vim.git;
 in {
   options.vim.git = {
-    signs = mkOption {
-      description = "Whether to enable git signs";
-      type = types.bool;
+    signs = {
+      enable = mkEnableOption "gitsigns";
+      blame = mkOption {
+        description = "Whether to enable git blame";
+        type = types.bool;
+      };
     };
     neogit = mkOption {
       description = "Whether to enable neogit";
@@ -22,12 +25,12 @@ in {
   config = {
     vim.startPlugins = with pkgs.neovimPlugins; [
     ]
-    ++ (optional cfg.signs gitsigns)
+    ++ (optional cfg.signs.enable gitsigns)
     ++ (optional cfg.neogit neogit);
 
     vim.configRC = ''
-    ${optionalString cfg.signs ''
-      require("gitsigns").setup({ keymaps = {} })
+    ${optionalString cfg.signs.enable ''
+      require("gitsigns").setup({ current_line_blame = ${boolToString cfg.signs.blame} })
     ''}
     ${optionalString cfg.neogit ''
       require("neogit").setup({

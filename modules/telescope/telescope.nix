@@ -59,6 +59,7 @@ in {
     ''}
 
       local actions = require("telescope.actions")
+      local themes = require("telescope.themes")
       local layout_actions = require("telescope.actions.layout")
       local telescope = require("telescope")
       telescope.setup({
@@ -114,6 +115,9 @@ in {
         ''}
         ${optionalString cfg.project ''
           project = { theme = "dropdown", browse_by_default = true },
+        ''}
+        ${optionalString cfg.ui-select ''
+          ["ui-select"] = { themes.get_cursor({}) },
         ''}
         },
       })

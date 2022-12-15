@@ -5,12 +5,7 @@
   ...
 }:
 with lib;
-let
-  cfg = config.vim.statusline;
-  luaBool = cond:
-    if cond
-    then "true"
-    else "false";
+let cfg = config.vim.statusline;
 in {
   options.vim.statusline = {
     enable = mkEnableOption "lualine";
@@ -67,7 +62,7 @@ in {
     vim.configRC = ''
       require"lualine".setup({
         options = {
-          globalstatus = ${luaBool cfg.global},
+          globalstatus = ${boolToString cfg.global},
           theme = "${cfg.theme}",
           component_separators = "${cfg.componentSeparator}",
           section_separators = "${cfg.sectionSeparator}",

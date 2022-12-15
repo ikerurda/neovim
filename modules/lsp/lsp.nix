@@ -67,6 +67,7 @@ in {
       local null_methods = require("null-ls.methods")
 
       local ls_sources = {
+        null.builtins.completion.spell,
       ${optionalString cfg.languages.nix ''
         null.builtins.formatting.alejandra.with({
           command = "${pkgs.alejandra}/bin/alejandra"

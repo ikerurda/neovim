@@ -17,7 +17,12 @@ in
     viAlias = vim.viAlias;
     vimAlias = vim.vimAlias;
     configure = {
-      customRC = vim.finalRC;
+      customRC = ''
+        lua << EOF
+        ${vim.startConfigRC}
+        ${vim.configRC}
+        EOF
+      '';
       packages.myVimPackage = with neovimPlugins; {
         start = filter (f: f != null) vim.startPlugins;
         opt = vim.optPlugins;
