@@ -10,6 +10,10 @@ with lib; {
     enable = mkDefault true;
     progress = mkDefault true;
     formatOnSave = mkDefault false;
+    lightbulb = {
+      enable = mkDefault true;
+      text = "A";
+    };
     languages = {
       nix = mkDefault true;
       c = mkDefault true;

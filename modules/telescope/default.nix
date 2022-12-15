@@ -10,7 +10,6 @@ with lib; {
     enable = mkDefault true;
     file-browser = mkDefault true;
     project = mkDefault true;
-    ui-select = mkDefault true;
-    symbols = mkDefault true;
+    lsp_handlers = mkDefault true;
   };
 }

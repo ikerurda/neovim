@@ -26,6 +26,10 @@
       url = "github:jose-elias-alvarez/null-ls.nvim";
       flake = false;
     };
+    lightbulb = {
+      url = "github:kosayoda/nvim-lightbulb";
+      flake = false;
+    };
 
     # Autocomplete
     cmp = {
@@ -106,12 +110,8 @@
       url = "github:ikerurda/telescope-project.nvim";
       flake = false;
     };
-    telescope-ui-select = {
-      url = "github:nvim-telescope/telescope-ui-select.nvim";
-      flake = false;
-    };
-    telescope-symbols = {
-      url = "github:nvim-telescope/telescope-symbols.nvim";
+    telescope-lsp-handlers = {
+      url = "github:slotos/telescope-lsp-handlers.nvim";
       flake = false;
     };
 

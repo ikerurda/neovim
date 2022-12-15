@@ -18,12 +18,8 @@ in {
       description = "Whether to enable telescope project";
       type = types.bool;
     };
-    ui-select = mkOption {
-      description = "Whether to enable telescope ui select";
-      type = types.bool;
-    };
-    symbols = mkOption {
-      description = "Whether to enable telescope symbols";
+    lsp_handlers = mkOption {
+      description = "Whether to enable telescope lsp handlers";
       type = types.bool;
     };
   };
@@ -35,8 +31,7 @@ in {
     ]
     ++ (optional cfg.file-browser telescope-file-browser)
     ++ (optional cfg.project telescope-project)
-    ++ (optional cfg.ui-select telescope-ui-select)
-    ++ (optional cfg.symbols telescope-symbols);
+    ++ (optional cfg.lsp_handlers telescope-lsp-handlers);
 
     vim.configRC = ''
     ${optionalString cfg.file-browser ''
@@ -117,9 +112,6 @@ in {
         ${optionalString cfg.project ''
           project = { theme = "dropdown", browse_by_default = true },
         ''}
-        ${optionalString cfg.ui-select ''
-          ["ui-select"] = { themes.get_cursor({}) },
-        ''}
         },
       })
 
@@ -136,9 +128,6 @@ in {
 
       local extensions = require("telescope").extensions
       telescope.load_extension("fzf")
-    ${optionalString cfg.symbols ''
-      vim.keymap.set("n", "<leader>fv", builtin.symbols)
-    ''}
     ${optionalString config.vim.lsp.enable ''
       vim.keymap.set("n", "<leader>fd", builtin.diagnostics)
     ''}
@@ -150,8 +139,8 @@ in {
       telescope.load_extension("project")
       vim.keymap.set("n", "<leader>fj", extensions.project.project)
     ''}
-    ${optionalString cfg.ui-select ''
-      telescope.load_extension("ui-select")
+    ${optionalString cfg.lsp_handlers ''
+      require("telescope-lsp-handlers").setup()
     ''}
     '';
   };

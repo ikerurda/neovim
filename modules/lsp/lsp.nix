@@ -18,6 +18,13 @@ in {
       description = "Whether to enable automatic formatting";
       type = types.bool;
     };
+    lightbulb = {
+      enable = mkEnableOption "lightbulb for code actions";
+      text = mkOption {
+        description = "Text to show instead of the lightbulb when code actions are available";
+        type = types.str;
+      };
+    };
     languages = {
       nix = mkOption {
         description = "Whether to enable the nix language server";
@@ -43,7 +50,8 @@ in {
       lspconfig
       null-ls
     ]
-    ++ (optional config.vim.completion.enable cmp-lsp);
+    ++ (optional config.vim.completion.enable cmp-lsp)
+    ++ (optional cfg.lightbulb.enable lightbulb);
 
     vim.configRC = ''
       local attach_keymaps = function(client, bufnr)
@@ -97,6 +105,7 @@ in {
       end
 
       default_on_attach = function(client, bufnr)
+        client.offset_encoding = "utf-8"
         attach_keymaps(client, bufnr)
       ${optionalString cfg.formatOnSave ''
         format_callback(client, bufnr)
@@ -134,7 +143,7 @@ in {
       lspconfig.clangd.setup({
         capabilities = capabilities,
         on_attach = default_on_attach,
-        cmd = {'${pkgs.clang-tools}/bin/clangd', '--background-index'};
+        cmd = {"${pkgs.clang-tools}/bin/clangd", "--background-index"};
       })
     ''}
 
@@ -155,6 +164,18 @@ in {
         on_attach = default_on_attach,
         cmd = { "${pkgs.nodePackages.pyright}/bin/pyright-langserver", "--stdio" },
       })
+    ''}
+
+    ${optionalString cfg.lightbulb.enable ''
+      require("nvim-lightbulb").setup({ autocmd = {enabled = true} })
+      ${optionalString (cfg.lightbulb.text != "") ''
+        vim.fn.sign_define("LightBulbSign", {
+          text = "${cfg.lightbulb.text}",
+          texthl = "",
+          linehl="",
+          numhl=""
+        })
+      ''}
     ''}
     '';
   };
