@@ -111,7 +111,7 @@ in {
       ''}
       end
 
-      require("null-ls").setup({
+      null.setup({
         diagnostics_format = "[#{m}] #{s} (#{c})",
         debounce = 250,
         default_timeout = 5000,
