@@ -486,7 +486,8 @@
         "treesitter": "treesitter",
         "treesitter-context": "treesitter-context",
         "treesitter-refactor": "treesitter-refactor",
-        "treesitter-textobjects": "treesitter-textobjects"
+        "treesitter-textobjects": "treesitter-textobjects",
+        "undotree": "undotree"
       }
     },
     "surround": {
@@ -630,6 +631,22 @@
       "original": {
         "owner": "nvim-treesitter",
         "repo": "nvim-treesitter-textobjects",
+        "type": "github"
+      }
+    },
+    "undotree": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1670546460,
+        "narHash": "sha256-Y6/Nq0vyEdMUjDfZqF8rxvnRHYd9yGYR0NY1nLWVIAM=",
+        "owner": "mbbill",
+        "repo": "undotree",
+        "rev": "1a23ea84bd02c34f50d8e10a8b4bfc89597ffe4e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mbbill",
+        "repo": "undotree",
         "type": "github"
       }
     }

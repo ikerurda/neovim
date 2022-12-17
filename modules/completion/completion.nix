@@ -29,7 +29,7 @@ in {
       cmp-spell
     ]
     ++ (optionals config.vim.lsp.enable [cmp-lsp cmp-lsp-signature])
-    ++ (optionals cfg.snippets [luasnip friendly-snippets cmp-luasnip])
+    ++ (optionals cfg.snippets [cmp-luasnip luasnip friendly-snippets]) 
     ++ (optional cfg.autopairs autopairs);
 
     vim.configRC = ''

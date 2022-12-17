@@ -46,6 +46,7 @@ in {
       require("nvim-treesitter.configs").setup({
         indent = { enable = true },
         highlight = { enable = true },
+        additional_vim_regex_highlighting = false,
       ${optionalString cfg.refactor ''
         refactor = {
           smart_rename = { enable = true, keymaps = { smart_rename = "gr" } },

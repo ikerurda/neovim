@@ -44,14 +44,6 @@
       url = "github:hrsh7th/cmp-path";
       flake = false;
     };
-    cmp-lsp = {
-      url = "github:hrsh7th/cmp-nvim-lsp";
-      flake = false;
-    };
-    cmp-lsp-signature = {
-      url = "github:hrsh7th/cmp-nvim-lsp-signature-help";
-      flake = false;
-    };
     cmp-calc = {
       url = "github:hrsh7th/cmp-calc";
       flake = false;
@@ -60,22 +52,24 @@
       url = "github:f3fora/cmp-spell";
       flake = false;
     };
+    cmp-lsp = {
+      url = "github:hrsh7th/cmp-nvim-lsp";
+      flake = false;
+    };
+    cmp-lsp-signature = {
+      url = "github:hrsh7th/cmp-nvim-lsp-signature-help";
+      flake = false;
+    };
     cmp-luasnip = {
       url = "github:saadparwaiz1/cmp_luasnip";
       flake = false;
     };
-
-    # Snippets
     luasnip = {
       url = "github:L3MON4D3/LuaSnip";
       flake = false;
     };
     friendly-snippets = {
       url = "github:rafamadriz/friendly-snippets";
-      flake = false;
-    };
-    lspkind = {
-      url = "github:onsails/lspkind-nvim";
       flake = false;
     };
 
@@ -116,8 +110,16 @@
     };
 
     # Tools
+    gitsigns = {
+      url = "github:lewis6991/gitsigns.nvim";
+      flake = false;
+    };
     neogit = {
       url = "github:TimUntersberger/neogit";
+      flake = false;
+    };
+    undotree = {
+      url = "github:mbbill/undotree";
       flake = false;
     };
     leap = {
@@ -154,16 +156,16 @@
     };
 
     # Visuals
-    indent-blankline = {
-      url = "github:lukas-reineke/indent-blankline.nvim";
-      flake = false;
-    };
-    gitsigns = {
-      url = "github:lewis6991/gitsigns.nvim";
+    lspkind = {
+      url = "github:onsails/lspkind-nvim";
       flake = false;
     };
     colorizer = {
       url = "github:norcalli/nvim-colorizer.lua";
+      flake = false;
+    };
+    indent-blankline = {
+      url = "github:lukas-reineke/indent-blankline.nvim";
       flake = false;
     };
   };

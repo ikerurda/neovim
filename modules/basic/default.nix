@@ -8,7 +8,7 @@ with lib; {
   imports = [./options.nix ./autocommands.nix ./mappings.nix];
   config.vim = {
     mouse = mkDefault "a";
-    clipboard = mkDefault true;
+    sysClipboard = mkDefault false;
     updatetime = mkDefault 800;
     ignoreCase = mkDefault true;
     smartCase = mkDefault true;

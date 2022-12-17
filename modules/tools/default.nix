@@ -12,6 +12,7 @@ with lib; {
       blame = mkDefault true;
     };
     neogit = mkDefault true;
+    undotree = mkDefault true;
     leap = mkDefault true;
     comment = mkDefault true;
     surround = mkDefault true;

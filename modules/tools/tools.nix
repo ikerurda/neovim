@@ -20,6 +20,10 @@ in {
       description = "Whether to enable neogit";
       type = types.bool;
     };
+    undotree = mkOption {
+      description = "Whether to enable undotree";
+      type = types.bool;
+    };
     leap = mkOption {
       description = "Whether to enable leaping";
       type = types.bool;
@@ -39,6 +43,7 @@ in {
     ]
     ++ (optional cfg.gitsigns.enable gitsigns)
     ++ (optional cfg.neogit neogit)
+    ++ (optional cfg.undotree undotree)
     ++ (optional cfg.leap leap)
     ++ (optional cfg.comment comment)
     ++ (optional cfg.surround surround);
@@ -53,6 +58,9 @@ in {
         disable_insert_on_commit = true,
       });
       vim.keymap.set("n", "<leader>g", function() require("neogit").open() end)
+    ''}
+    ${optionalString cfg.undotree ''
+      vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
     ''}
     ${optionalString cfg.leap ''
       local leap = require("leap")

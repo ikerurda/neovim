@@ -123,6 +123,9 @@ in {
       vim.keymap.set("n", "<leader>fa", builtin.current_buffer_fuzzy_find)
       vim.keymap.set("n", "<leader>fg", builtin.live_grep)
       vim.keymap.set("n", "<leader>fs", builtin.grep_string)
+      vim.keymap.set('n', '<leader>fS', function()
+        builtin.grep_string({ search = vim.fn.input("Grep > ") })
+      end)
       vim.keymap.set("n", "<leader>fh", builtin.help_tags)
       vim.keymap.set("n", "<leader>fm", builtin.man_pages)
 

@@ -13,7 +13,7 @@ in {
       description = "Enable mouse support: a (all), n (normal), v (visual), i (insert), c (command)";
       type = types.str;
     };
-    clipboard = mkOption {
+    sysClipboard = mkOption {
       description = "Enable system clipboard integration";
       type = types.bool;
     };
@@ -68,7 +68,7 @@ in {
 
     vim.startConfigRC = ''
       vim.opt.mouse = "${cfg.mouse}"
-    ${optionalString cfg.clipboard ''
+    ${optionalString cfg.sysClipboard ''
       vim.opt.clipboard = "unnamedplus"
     ''}
       vim.opt.termguicolors = true
