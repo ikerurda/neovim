@@ -56,6 +56,7 @@ in {
       require("neogit").setup({
         disable_builtin_notifications = true,
         disable_insert_on_commit = true,
+        kind = "split_above",
       });
       vim.keymap.set("n", "<leader>g", function() require("neogit").open() end)
     ''}
