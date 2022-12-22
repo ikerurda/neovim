@@ -7,7 +7,7 @@
 with lib; {
   imports = [./core.nix];
   config.vim = {
-    viAlias = mkDefault true;
+    viAlias = mkDefault false;
     vimAlias = mkDefault true;
     startConfigRC = mkDefault "";
     configRC = mkDefault "";
