@@ -106,7 +106,7 @@ in {
       vim.opt.cursorline = ${boolToString cfg.cursorLine}
       vim.opt.virtualedit = "block"
 
-      vim.opt.winbar = "%t%M"
+      vim.opt.winbar = "%n:%f%M"
 
       vim.opt.equalalways = false
       vim.opt.splitright = true
