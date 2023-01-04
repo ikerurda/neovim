@@ -29,6 +29,10 @@ in {
       description = "Map <C-t> to changing the cwd to the git root or the current file if not in a repo";
       type = types.bool;
     };
+    mapWincmdToCtrl = mkOption {
+      description = "Map <C> to <C-w> for window commands";
+      type = types.bool;
+    };
   };
 
   config = {
@@ -75,6 +79,13 @@ in {
         local out = vim.fn.system("git -C " .. folder .. " rev-parse --show-toplevel")
         vim.cmd("cd " .. (vim.v.shell_error == 0 and out or folder))
       end)
+    ''}
+
+    ${optionalString cfg.mapWincmdToCtrl ''
+      vim.keymap.set("n", "<c-h>", "<cmd>wincmd h<cr>")
+      vim.keymap.set("n", "<c-j>", "<cmd>wincmd j<cr>")
+      vim.keymap.set("n", "<c-k>", "<cmd>wincmd k<cr>")
+      vim.keymap.set("n", "<c-l>", "<cmd>wincmd l<cr>")
     ''}
     '';
   };

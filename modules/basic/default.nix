@@ -25,6 +25,7 @@ with lib; {
     mapMoveLine = mkDefault true;
     mapChangeWordDotRepeat = mkDefault true;
     mapCDtoGitOrCurrent = mkDefault true;
+    mapWincmdToCtrl = mkDefault true;
     highlightOnYank = mkDefault true;
   };
 }
